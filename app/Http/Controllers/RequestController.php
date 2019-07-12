@@ -139,7 +139,7 @@ class RequestController extends Controller
 
         $article_income->provider_id = $request->provider_id;
         $article_income->correlative = $counter;
-        $article_income->prs_id =$article_request->prs_id;
+        $article_income->employee_id =$article_request->employee_id;
         $article_income->storage_id = $article_request->storage_origin_id;
         $article_income->type = $request->type;
         $article_income->total_cost = $request->total_cost;
