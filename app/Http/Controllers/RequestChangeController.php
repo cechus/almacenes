@@ -13,6 +13,7 @@ use App\Article;
 use App\ArticleRequest;
 use App\Stock;
 use App\UserHistory;
+use App\ArticleHistory;
 use DB;
 use Auth;
 class RequestChangeController extends Controller
@@ -131,9 +132,10 @@ class RequestChangeController extends Controller
        // return $request_change_income_items;
         foreach($request_change_income_items as $request_income_item)
         {
+            //return json_encode($request_income_item);
 
                     $request_change_income_item = new RequestChangeIncomeItem;
-                    $request_change_income_item->article_income_item_id = $request_income_item->id>0?$request->id:null;
+                    $request_change_income_item->article_income_item_id = $request_income_item->id>0?$request_income_item->id:null;
                     $request_change_income_item->request_change_income_id = $request_change->id;
                     $request_change_income_item->article_id =  $request_income_item->article->id;
                     $request_change_income_item->quantity = $request_income_item->quantity;
@@ -141,7 +143,8 @@ class RequestChangeController extends Controller
                     $request_change_income_item->save();
 
         }
-             return redirect('request_change');
+        //return $request_change->request_change_income_items;
+        return redirect('request_change');
 
     }
 
@@ -209,7 +212,7 @@ class RequestChangeController extends Controller
         $request_change_income = RequestChangeIncome::find($request->request_change_income_id);
         $article_income = ArticleIncome::find($request_change_income->article_income_id);
         // return $article_income;
-
+        // return $request_change_income->request_change_income_items;
         foreach($request_change_income->request_change_income_items as $income_change_item)
         {
            //punto de aprobacion
@@ -233,8 +236,15 @@ class RequestChangeController extends Controller
                         $increment = $request_change_income_item->quantity - $article_income_item->quantity;
                         $article_income_item->quantity = $request_change_income_item->quantity;
                         $article_income_item->save();
-                        $stock = Stocks::where('article_income_item_id',$article_income_item->id);
-                        $stock->quantity = $stock->quantity+$increment;
+
+                        //actualizando article history
+                        // $article_history = ArticleHistory::where('type','Entrada')->where('article_income_item_id',$article_income_item->id)->first();
+                        // $article_history->quantity = $article_income_item->quantity;
+                        // $article_history->save();
+
+                        //actualizando el stock
+                        $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                        $stock->quantity += $increment;
                         $stock->save();
                         // $stock->quan
 
@@ -250,7 +260,7 @@ class RequestChangeController extends Controller
 
             }else
             {
-                //registrando nuevos items
+//                registrando nuevos items //revisar
                 $new_article_income_item = new ArticleIncomeItem;
                 $new_article_income_item->article_income_id = $request_change_income->article_income_id;
                 $new_article_income_item->article_id = $request_change_income_item->article_id;
