@@ -13,6 +13,7 @@ use App\Article;
 use App\ArticleRequest;
 use App\Stock;
 use App\UserHistory;
+use App\ArticleRequestItem;
 use DB;
 use Auth;
 class RequestChangeController extends Controller
@@ -24,7 +25,6 @@ class RequestChangeController extends Controller
      */
     public function index()
     {
-        //
         //primero ver  request de solo la sucursal
         $request_incomes = [];
         $request_outs = [];
@@ -53,7 +53,7 @@ class RequestChangeController extends Controller
                                                     ->get();
 
             $request_outs = RequestChangeOut::where('storage_id',Auth::user()->getStorage()->id)
-                                            ->where('state','Pendiente Aprobacion')
+                                            //->where('state','Pendiente Aprobacion')
                                             ->get();
         }
 
@@ -77,7 +77,6 @@ class RequestChangeController extends Controller
     {
         $article_income = ArticleIncome::with('provider')//join('sisme.providers as prov','sisme.article_incomes.provider_id', '=', 'prov.id')
                                         ->with('article_income_items')->find($article_income_id);
-       // return $article_income;
         $articles = Article::with('unit')->get();//cambiar articulos por los articulos de inventario
 
         // return $articles;
@@ -147,7 +146,7 @@ class RequestChangeController extends Controller
 
     public function store_out(Request $request)
     {
-         //return $request->all();
+        //return $request->all();
         $arti=null;
 
         $request_change_out = new RequestChangeOut;
@@ -169,7 +168,7 @@ class RequestChangeController extends Controller
                     $request_change_out_item = new RequestChangeOutItem;
                     $request_change_out_item->request_change_out_id = $request_change_out->id;
                     $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                    $request_change_out_item->article_request_item_id = $request_out_item->id;
+                  //  $request_change_out_item->article_request_item_id = $request_out_item->id;
 
                      // $request_change_out_item->cost = $request_income_item->new_cost;
                     $request_change_out_item->quantity = $request_out_item->quantity;
@@ -180,7 +179,7 @@ class RequestChangeController extends Controller
                     $request_change_out_item = new RequestChangeOutItem;
                     $request_change_out_item->request_change_out_id = $request_change_out->id;
                     $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                    $request_change_out_item->article_request_item_id = $request_out_item->id;
+                 //   $request_change_out_item->article_request_item_id = $request_out_item->id;
 
 
                     // $request_change_out_item->cost = $request_income_item->new_cost;
@@ -218,6 +217,56 @@ class RequestChangeController extends Controller
             $request_change_income_item = RequestChangeIncomeItem::find($income_change_item->id);
             // return $request_change_income_item;
 
+<<<<<<< HEAD
+                            if(0==$request_change_income_item->cost)
+                            {
+                                 //$cant01= $article_income_item->quantity;
+                                 //$cant02= $request_change_income_item->quantity;
+                                if($article_income_item->quantity<$request_change_income_item->quantity)
+                                {
+                                    $cantidad=$request_change_income_item->quantity-$article_income_item->quantity;
+
+                                    $article_income_item->quantity = $request_change_income_item->quantity;
+                                    $article_income_item->save();
+
+                                    $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                                    $stock->quantity += $cantidad;
+                                    //$stock->cost -= $article_income_item->cost;
+                                    $stock->save();
+                                }
+                                else
+                                {
+                                    $cantidad=$article_income_item->quantity-$request_change_income_item->quantity;
+                                    //return $cantidad;
+                                    $article_income_item->quantity = $request_change_income_item->quantity;
+                                    $article_income_item->save();
+
+                                    $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                                    $stock->quantity -= $cantidad;
+                                    //$stock->cost -= $article_income_item->cost;
+                                    $stock->save();
+                                }
+                              //  return $cantidad;
+                           // return $article_income_item;
+                          // $cant01= $article_income_item->quantity;
+                          //  $cant02= $request_change_income_item->quantity;
+
+                           // $article_income_item->quantity = $request_change_income_item->quantity;
+                            //$article_income_item->cost = $request_change_income_item->cost;
+<<<<<<< HEAD
+                           // $article_income_item->save();
+                            
+                           
+=======
+                            $article_income_item->save();
+
+                            $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                            $stock->quantity -= $article_income_item->quantity;
+                            //$stock->cost -= $article_income_item->cost;
+                            $stock->save();
+>>>>>>> upstream/master
+                            }
+=======
             $article_income_item = ArticleIncomeItem::find($income_change_item->article_income_item_id);
             if($article_income_item)
             {
@@ -247,6 +296,7 @@ class RequestChangeController extends Controller
                 }
                 //$new_article_income_item = ArticleIncomeItem::find() ;
 
+>>>>>>> upstream/master
 
             }else
             {
@@ -338,42 +388,39 @@ class RequestChangeController extends Controller
                 # code...
                    $request_change_out->state = 'Pendiente';
                break;
-           //  case 'Pendiente':
-                # code...
-         //           $request_change_out->state = 'Pendiente1';
-           //     break;
-         //    case 'Pendiente1':
-                # code...
-           //         $request_change_out->state = 'Pendiente2';
-           //     break;
             case 'Pendiente':
                 # code...
                     $request_change_out->state = 'Aprobado';
                     # colocar logica de codigo
+                   // return $request_change_out;
                     foreach($request_change_out->request_change_out_items as $out_change_item)
                     {
+
                         $request_change_out_item = RequestChangeOutItem::find($out_change_item->id);
                         if($request_change_out_item->article_request_item) //si existe su entrada si no es nuevo en la modificacion
                         {
+
                             $article_request_item = ArticleRequestItem::find($request_change_out_item->article_request_item->id);
+                          
                             $article_request_item->quantity = $request_change_out_item->quantity;
-                            $article_request_item->cost = $request_change_out_item->cost;
                             $article_request_item->save();
 
                             //para el stock verificar el flujo a seguir
                             $stock = Stock::where('article_income_item_id',$article_request_item->article_request_item_id)->first();
+                            //return $stock;
                             $stock->quantity += $article_request_item->quantity;
-                            $stock->cost += $article_request_item->cost;
+                            //$stock->cost += $article_request_item->cost;
                             $stock->save();
 
                         }else //en caso de que sea nuevo item en la modificacion
                         {
+
                             $article_request_item = new ArticleRequestItem;
                             $article_request_item->article_income_id = $request_change_out->article_request_id;
                             $article_request_item->article_id = $request_change_out_item->article_id;
                             $article_request_item->quantity = 0;
                             $article_request_item->quantity_apro = $request_change_out_item->quantity;
-                            $article_request_item->cost = $request_change_out_item->cost;
+                           // $article_request_item->cost = $request_change_out_item->cost;
                             $article_request_item->save();
 
 
@@ -407,7 +454,6 @@ class RequestChangeController extends Controller
                                             $stock->quantity = $stock->quantity - $quantity;
                                             $descuento = $quantity;
                                             $quantity = 0;
-
                                         }
                                         Log::info('new cant :'.$quantity);
                                         Log::info('new stock:'.$stock->quantity);
@@ -441,8 +487,12 @@ class RequestChangeController extends Controller
      */
     public function show($id) //para entradas
     {
-        $request_change_income = RequestChangeIncome::with('request_change_income_items','article_income')->find($id);
-       // return $request_change_income;
+        //$request_change_income = RequestChangeIncome::with('request_change_income_items','article_income')
+                                                   // ->where('request_change_incomes->quantity','=',700)
+                                                   // ->find($id);
+       $request_change_income = RequestChangeIncome::with('request_change_income_items','article_income')
+                                                   // ->where('request_change_incomes->quantity','=',700)
+                                                    ->find(99);
         return response()->json($request_change_income);
     }
 
