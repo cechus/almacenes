@@ -26,6 +26,7 @@
                     <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
                         <thead>
                             <tr>
+                                <th>Nro</th>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
                                 {{-- <th>Cantidad</th> --}}
@@ -38,8 +39,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($articles as $item)
+                            @foreach ($articles as $index=>$item)
                             <tr>
+                                <td>{{$index+=1  }}</td>
                                 <td>{{$item->code}}</td>
                                 <td>{{$item->name}}</td>
                                 {{-- <td>0</td> --}}
