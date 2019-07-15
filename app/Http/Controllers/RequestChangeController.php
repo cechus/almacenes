@@ -16,6 +16,7 @@ use App\UserHistory;
 use App\ArticleHistory;
 use DB;
 use Auth;
+use Log;
 class RequestChangeController extends Controller
 {
     /**
@@ -208,6 +209,7 @@ class RequestChangeController extends Controller
     {
         //return $request;
         $request_change_income = RequestChangeIncome::find($request->request_change_income_id);
+        // return $request_change_income;
         $article_income = ArticleIncome::find($request_change_income->article_income_id);
         // return $article_income;
         // return $request_change_income->request_change_income_items;
@@ -232,13 +234,14 @@ class RequestChangeController extends Controller
                     {
                         //caso 2
                         $increment = $request_change_income_item->quantity - $article_income_item->quantity;
+                        // $article_income_item->update(["quantity" => $request_change_income_item->quantity]);
                         $article_income_item->quantity = $request_change_income_item->quantity;
                         $article_income_item->save();
 
-                        //actualizando article history
-                        // $article_history = ArticleHistory::where('type','Entrada')->where('article_income_item_id',$article_income_item->id)->first();
-                        // $article_history->quantity = $article_income_item->quantity;
-                        // $article_history->save();
+                      // actualizando article history
+                        $article_history = ArticleHistory::where('type','Entrada')->where('article_income_item_id',$article_income_item->id)->first();
+                        $article_history->quantity = $article_income_item->quantity;
+                        $article_history->save();
 
                         //actualizando el stock
                         $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
@@ -249,6 +252,7 @@ class RequestChangeController extends Controller
                     }else
                     {
                         // caso 1
+                        //mandar mensaje de error por un tema de negativo XD no se puede si es negativoXD XD XD
 
                     }
 
@@ -449,7 +453,6 @@ class RequestChangeController extends Controller
                                                    // ->where('request_change_incomes->quantity','=',700)
                                                    // ->find($id);
        $request_change_income = RequestChangeIncome::with('request_change_income_items','article_income')
-                                                   // ->where('request_change_incomes->quantity','=',700)
                                                     ->find($id);
         return response()->json($request_change_income);
     }

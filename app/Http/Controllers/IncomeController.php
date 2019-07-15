@@ -11,6 +11,8 @@ use App\ArticleIncomeItem;
 use App\Stock;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use App\ArticleHistory;
+use App\UserHistory;
 class IncomeController extends Controller
 {
     /**
@@ -103,7 +105,7 @@ class IncomeController extends Controller
             $article_income_item->cost = $article->cost;
             $article_income_item->quantity = $article->quantity;
             $article_income_item->save();
-            Log::info('aqui deberia lanzarse el evento');
+           // Log::info('aqui deberia lanzarse el evento'); si se lanza el problema es usar el metodo update
 
             $stock = new Stock;
             $stock->article_id = $article_income_item->article_id;
@@ -112,6 +114,20 @@ class IncomeController extends Controller
             $stock->quantity = $article_income_item->quantity;
             $stock->cost = $article_income_item->cost;
             $stock->save();
+
+            $article_history = new ArticleHistory;
+            $article_history->article_income_item_id =$article_income_item->id;
+            $article_history->article_id =$article_income_item->article_id;
+            $article_history->storage_id = Auth::user()->getStorage()->id;
+            $article_history->type ='Entrada';
+            $article_history->save();
+
+            $article_user = new UserHistory;
+            $article_user->article_income_item_id =$article_income_item->id;
+            $article_user->storage_id = Auth::user()->getStorage()->id;
+            $article_user->user_usr_id = Auth::user()->usr_id;
+            $article_user->type ='Entrada';
+            $article_user->save();
 
             // $article_income_item->article_id = $article->;
         }

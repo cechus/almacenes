@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
 use App\Article;
-
+use Carbon\Carbon;
+use Session;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -102,6 +103,50 @@ class User extends Authenticatable
     public function storages()
     {
         return $this->belongsToMany('App\Storage','sisme.user_storage');
+    }
+    public function getUfv()
+    {
+        $carbon = new Carbon();
+        $date = $carbon->now();
+        $day = Carbon::parse($date)->day;
+        $month = Carbon::parse($date)->month;
+        $year = Carbon::parse($date)->year;
+        $extracto = null;
+
+        $ufv = "";
+        // $content = file_get_contents('https://www.bcb.gob.bo/librerias/indicadores/ufv/gestion.php?sdd=04&smm=07&saa=2019&Button=++Ver++&reporte_pdf=07*04*2019**07*04*2019*&edd=04&emm=07&eaa=2019&qlist=1');
+        try {
+            //code...
+            $content = file_get_contents('https://www.bcb.gob.bo/librerias/indicadores/ufv/gestion.php?sdd=' . $day . '&smm=' . $month . '&saa=' . $year . '&Button=++Ver++&reporte_pdf=' . $month . '*' . $day . '*' . $year . '**' . $month . '*' . $day . '*' . $year . '*&edd=' . $day . '&emm=' . $month . '&eaa=' . $year . '&qlist=1');
+
+            $patron = '|<div align="center">(.*?)</div>|is';
+            if (preg_match_all($patron, $content, $extracto) > 0) {
+                $ufv_exist = Ufv::where('date',$date)->first();
+                if ($ufv_exist) {
+                    $ufv= $ufv_exist->price;
+                    // Session::put('UFV', $ufv_exist->price);
+                }else{
+                    $new_ufv = new Ufv();
+                    $numero = trim($extracto[1][1]);
+                    $numero_dos= floatval(str_replace(',', '.', str_replace('.', '', $numero)));
+                    $new_ufv->price = $numero_dos;
+                    $new_ufv->date = $date;
+                    $new_ufv->save();
+                    $ufv= $ufv_exist->price;
+                    // Session::put('UFV', $numero_dos);
+                }
+
+            } else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            Session::put('UFV',"");
+            session()->flash('error','No se pudo Sincronizar el UFV con el BCB ');
+            //return 'No sincronizo la Ufv';
+            //dd($th);
+        }
+        return $ufv;
     }
 
 }

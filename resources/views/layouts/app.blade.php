@@ -56,7 +56,7 @@
                 @hasrole('Administrador')
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            <strong>Ufv:</strong> {{ Session::get('UFV') }}
+                            <strong>Ufv:</strong> {{ Auth::user()->getUfv() }}
                         </a>
                     </li>
                     <li class="nav-item">

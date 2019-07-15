@@ -102,7 +102,7 @@
                                                             <span class="badge badge-danger">{{$item->state}}</span>
                                                             @break
                                                         @case('Pendiente Aprobacion')
-                                                             <a href="#" data-toggle="modal" data-target="#RequestChangeIncomeModal" data-json="{{$item}}" data-edited="true"><i class="fas fa-clipboard-check fa-lg">1</i></a>
+                                                             <a href="#" data-toggle="modal" data-target="#RequestChangeIncomeModal" data-json="{{$item}}" data-edited="true"><i class="fas fa-clipboard-check fa-lg"></i> <span class="badge badge-pill badge-secondary">1</span></a>
                                                             @break
                                                     @endswitch
 
