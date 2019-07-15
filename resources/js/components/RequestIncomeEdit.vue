@@ -107,6 +107,7 @@ export default {
     }),
     mounted() {
         console.log('Componente request_change_income iniciado')
+        console.log('income  XD');
         $('#RequestChangeIncomeModal').on('show.bs.modal',(event)=> {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var request_change_income = button.data('json') // Extract info from data-* attributes

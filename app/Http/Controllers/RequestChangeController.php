@@ -450,7 +450,7 @@ class RequestChangeController extends Controller
                                                    // ->find($id);
        $request_change_income = RequestChangeIncome::with('request_change_income_items','article_income')
                                                    // ->where('request_change_incomes->quantity','=',700)
-                                                    ->find(99);
+                                                    ->find($id);
         return response()->json($request_change_income);
     }
 
