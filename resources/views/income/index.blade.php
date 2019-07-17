@@ -26,7 +26,7 @@
                         <thead>
                             <tr>
                                 <th>Nro</th>
-                                <th>Codigo Ingreso</th>
+                                <th>Cod. Ingreso</th>
                                 <th>Factura</th>
                                 <th>Fecha Ingreso</th>
                                 <th>Persona</th>
@@ -52,7 +52,7 @@
                                 <td>{{$item->provider->name}}</td>
                                 <td>{{$item->getTotalQuantity()}}</td>
                                 <td>{{$item->total_cost}}</td>
-                                
+
                             <td> <a href="{{url('create_change_income/'.$item->id)}}"> <i class="fa fa-file-signature text-secondary" ></i> </a> </td>
                             </tr>
                             @endforeach

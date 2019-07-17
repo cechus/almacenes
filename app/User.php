@@ -124,7 +124,7 @@ class User extends Authenticatable
                 $ufv_exist = Ufv::where('date',$date)->first();
                 if ($ufv_exist) {
                     $ufv= $ufv_exist->price;
-                    // Session::put('UFV', $ufv_exist->price);
+
                 }else{
                     $new_ufv = new Ufv();
                     $numero = trim($extracto[1][1]);
@@ -133,18 +133,17 @@ class User extends Authenticatable
                     $new_ufv->date = $date;
                     $new_ufv->save();
                     $ufv= $ufv_exist->price;
-                    // Session::put('UFV', $numero_dos);
+
                 }
 
             } else {
                 return false;
             }
         } catch (\Throwable $th) {
-            //throw $th;
-            Session::put('UFV',"");
+
+            //Session::put('UFV',"");
             session()->flash('error','No se pudo Sincronizar el UFV con el BCB ');
-            //return 'No sincronizo la Ufv';
-            //dd($th);
+
         }
         return $ufv;
     }

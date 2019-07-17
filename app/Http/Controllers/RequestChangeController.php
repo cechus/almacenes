@@ -205,7 +205,7 @@ class RequestChangeController extends Controller
         // return back()->withInput();
     }
 
-    public function firstConfirmation(Request $request)
+    public function firstConfirmation(Request $request) //confirmacion de solocitudes de modificacion
     {
         //return $request;
         $request_change_income = RequestChangeIncome::find($request->request_change_income_id);
@@ -226,32 +226,53 @@ class RequestChangeController extends Controller
             {
                 if($article_income_item->cost != $request_change_income_item->cost )
                 {
-                    //logica para el cambio ?
+                    //logica para el cambio ? este cambio afectara de manera recursiva a todas las salidas que existan con este cambio
+                    //ver opciones
                 }
                 if($article_income_item->quantity != $request_change_income_item->quantity )
                 {
                     if($request_change_income_item->quantity > $article_income_item->quantity )
                     {
-                        //caso 2
+                        //caso 2 aumento de producto
                         $increment = $request_change_income_item->quantity - $article_income_item->quantity;
+                        Log::info($increment);
                         // $article_income_item->update(["quantity" => $request_change_income_item->quantity]);
                         $article_income_item->quantity = $request_change_income_item->quantity;
                         $article_income_item->save();
 
-                      // actualizando article history
-                        $article_history = ArticleHistory::where('type','Entrada')->where('article_income_item_id',$article_income_item->id)->first();
-                        $article_history->quantity = $article_income_item->quantity;
-                        $article_history->save();
+                      // actualizando article history en entrada no hay quantity lol XD
+                        // $article_history = ArticleHistory::where('type','Entrada')->where('article_income_item_id',$article_income_item->id)->first();
+                        // $article_history->quantity = $article_income_item->quantity;
+                        // $article_history->save();
 
                         //actualizando el stock
                         $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
                         $stock->quantity += $increment;
                         $stock->save();
+                        Log::info($stock);
                         // $stock->quan
 
                     }else
                     {
                         // caso 1
+                        // decrease product
+                        $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                        if($stock->quantity >= $request_change_income_item->quantity )
+                        {
+                            $decrease = $article_income_item->quantity - $request_change_income_item->quantity ;
+                            $article_income_item->quantity = $request_change_income_item->quantity;
+                            $article_income_item->save();
+                            $stock = Stock::where('article_income_item_id',$article_income_item->id)->first();
+                            $stock->quantity -= $decrease;
+                            $stock->save();
+                            Log::info($stock);
+
+                        }else
+                        {
+                            session()->flash('error','No se puede realizar el cambio al producto '.$request_change_income_item->article->name.' debido a que este genera un stock negativo verifique sus salidas');
+
+                        }
+
                         //mandar mensaje de error por un tema de negativo XD no se puede si es negativoXD XD XD
 
                     }
