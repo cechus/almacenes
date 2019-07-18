@@ -26,7 +26,7 @@
                         </template>
 
                         <template slot="quantity" slot-scope="props">
-                            <input class='form-control' v-model="props.row.quantity" >
+                            <input class='form-control' v-model="props.row.quantity" @keyup.enter="addIncome(props.row)" >
                         </template>
                         <template slot="cost" slot-scope="props">
                             <input class='form-control' v-model="props.row.cost" @keyup.enter="addIncome(props.row)"  >
@@ -279,13 +279,13 @@ export default {
                 name: "unit.name",
             },
 
-             {
-                label: "Cantidad",
-                name: "quantity",
-            },
             {
                 label: "Costo Unitario",
                 name: "cost",
+            },
+            {
+                label: "Cantidad",
+                name: "quantity",
             },
 
             {
@@ -319,7 +319,7 @@ export default {
         addIncome(item){
              console.log('articulossss',item.quantity);
              console.log('itemtab',this.row);
-             if(item.quantity>0 && item.cost>0)
+             if(item.quantity>0 && item.cost>=0)
              {
                 // alert('es mayor a cero');
                 this.incomes.push({article:item,quantity:item.quantity,cost:item.cost});

@@ -65,7 +65,7 @@
                                         <tr v-for="(item,index) in items" :key="index" >
                                             <!--<td><input type="checkbox" id="itemart" v-model="item.itemart" @input="mostraritem(item)"></td>-->
                                             <td>{{index+1}}</td>
-                                            <td v-if="form.type.id==2">
+                                            <!-- <td v-if="form.type.id==2">
 
                                                 <multiselect
                                                     v-model="item.article"
@@ -80,8 +80,8 @@
                                                     >
                                                 </multiselect>
 
-                                            </td>
-                                            <td v-else >{{item.article.name}}</td>
+                                            </td> -->
+                                            <td>{{item.article.name}}</td>
                                             <td>{{item.article.unit.name}}</td>
                                             <td v-if="form.type.id==2">
                                                 <input type="text" class="form-control" v-model="item.quantity">

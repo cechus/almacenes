@@ -26,7 +26,7 @@ class CreateArticleIncomesTable extends Migration
             $table->string('dependence')->nullable();
             $table->string('remision_number')->nullable();
             $table->date('date')->nullable();
-            $table->enum('type', ['Ingreso', 'Traspaso' ,'Reingreso']);
+            $table->enum('type', ['Fondos en Avance', 'Reembolso' ,'Orden de Compra','Contrato']);
             $table->decimal('total_cost');
             $table->unsignedInteger('correlative')->index();
             $table->unique( array('storage_id','correlative'));

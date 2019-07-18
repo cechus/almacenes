@@ -27,6 +27,7 @@
                             <tr>
                                 <th>Nro</th>
                                 <th>Cod. Ingreso</th>
+                                <th>Acta RyC</th>
                                 <th>Factura</th>
                                 <th>Fecha Ingreso</th>
                                 <th>Persona</th>
@@ -42,6 +43,9 @@
                                 <td>{{$count++}}</td>
                                 <td><a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('income_note/'.$item->id)}}">{{$item->correlative}}</a>
                                 </td>
+                                <td><a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('ryc_note/'.$item->id)}}">{{$item->correlative}}</a>
+                                </td>
+
                                 <td>
                                     @if($item->path_invoice)
                                     <a href="#" data-toggle="modal" data-target="#modalPdf" data-url="{{url('storage/'.substr($item->path_invoice,7))}}" > <i class="fa fa-file-invoice-dollar text-secondary"></i> </a>
