@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
 class CreateArticleIncomesTable extends Migration
 {
     /**
@@ -24,7 +22,7 @@ class CreateArticleIncomesTable extends Migration
             $table->foreign('employee_id')->references('id')->on('rrhh.employees');
             $table->string('path_invoice')->nullable();
             //$table->string('dependence')->nullable();
-            $table->string('number')->nullable(); //este variara en funcion de del type
+            $table->string('number')->nullable();
             $table->date('date')->nullable();
             $table->enum('type', ['Fondos en Avance', 'Reembolso' ,'Orden de Compra','Contrato']);
             $table->decimal('total_cost');
@@ -33,7 +31,6 @@ class CreateArticleIncomesTable extends Migration
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

@@ -18,9 +18,43 @@
         <td class="text-xs uppercase">{{$article_income->provider->phone}}</td>
     </tr>
     <tr>
-        <td  class="text-center bg-grey-darker text-xs text-white">Nota Remision</td>
-        <td class="text-xs uppercase">{{$article_income->remision_number}}</td>
-        <td  class="text-center bg-grey-darker text-xs text-white">Fecha Remision</td>
+        @switch($article_income->type)
+            @case("Fondos en Avance")
+                <td  class="text-center bg-grey-darker text-xs text-white">Numero de Remision</td>
+                @break
+
+            @case("Reembolso")
+                <td  class="text-center bg-grey-darker text-xs text-white">Numero de Reemboloso</td>
+                @break
+
+            @case("Orden de Compra")
+                <td  class="text-center bg-grey-darker text-xs text-white">Numero de Compra</td>
+                @break
+
+            @case("Contrato")
+                <td  class="text-center bg-grey-darker text-xs text-white">Numero de Contrato</td>
+                @break
+        @endswitch
+
+        <td class="text-xs uppercase">{{$article_income->number}}</td>
+        @switch($article_income->type)
+            @case("Fondos en Avance")
+                <td  class="text-center bg-grey-darker text-xs text-white">Fecha de Remision</td>
+                @break
+
+            @case("Reembolso")
+                <td  class="text-center bg-grey-darker text-xs text-white">Fecha de Reemboloso</td>
+                @break
+
+            @case("Orden de Compra")
+                <td  class="text-center bg-grey-darker text-xs text-white">Fecha de Compra</td>
+                @break
+
+            @case("Contrato")
+                <td  class="text-center bg-grey-darker text-xs text-white">Fecha de Contrato</td>
+                @break
+        @endswitch
+
         <td class="text-xs uppercase">{{$article_income->date}}</td>
     </tr>
     <tr>

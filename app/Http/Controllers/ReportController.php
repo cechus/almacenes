@@ -210,11 +210,6 @@ class ReportController extends Controller
         $total_quantity=0;
         $date =Carbon::now();
         $count = 1;
-
-       // $user = User::where('usr_prs_id',$article_request->prs_id)->first();
-        // $persona = $user->getFullName(); //esto esta mal tambien
-        // $gerencia = $user->getGerencia();
-        // $storage = $article_request->storage_destiny->name;
         $code =  '';//$article_request->correlative .'/'.Carbon::createFromFormat('Y-m-d H:i:s', $article_request->created_at)->year;
 
         $view = \View::make('report.request_storage_doneview', compact('username','date','title', 'code','provider','type','incomes', 'numremision','fecha','funcionario','total_quantity','count','user'));

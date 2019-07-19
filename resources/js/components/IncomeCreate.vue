@@ -131,7 +131,7 @@
                                 </multiselect>
                                 <div class="invalid-feedback">{{ errors.first("proveedor") }}</div>
                             </div>
-                            <div class="form-group  col-md-3">
+                            <div class="form-group  col-md-6">
                                 <input type="text" name="type" v-if="form.type" :value="form.type.name" hidden>
                                 <label for="tipo">Tipo</label>
                                 <multiselect
@@ -148,8 +148,8 @@
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group  col-md-6">
+                        <div class="row" v-if="form.type">
+                            <div class="form-group  col-md-6" v-if="form.type.name == 'Fondos en Avance'||form.type.name == 'Reembolso'">
                                 <!-- <input type="text" name="provider_id" v-if="form.provider" :value="form.provider.id" hidden> -->
                                 <label for="tipo">Factura</label>
                                 <div class="input-group ">
@@ -159,13 +159,13 @@
                                 </div>
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
-                            <div class="form-group  col-md-3" v-if="hasFile">
-                                <label for="tipo">Nota Remision</label>
-                                    <input type="text" name="remision_number" class="form-control" v-model="form.remision_number">
+                            <div class="form-group  col-md-3" >
+                                <label for="tipo">{{title_number()}}</label>
+                                    <input type="text" name="number" class="form-control" v-model="form.remision_number">
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
-                            <div class="form-group  col-md-3" v-if="hasFile">
-                                <label for="tipo">Fecha</label>
+                            <div class="form-group  col-md-3" >
+                                <label for="tipo">{{title_date()}}</label>
                                 <!--<input type = "tel" v-mask = "'## / ## / ####'" />-->
                                     <input type="tel" name="date" id="id_dia" class="form-control" v-model="form.date" v-mask = "'##/##/####'">
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
@@ -254,7 +254,7 @@ export default {
         title:'',
         rows: [],
         incomes: [],
-        types:[{name: 'Ingreso'},{name:'Traspaso'},{name:'Reingreso'}],
+        types:[{name: 'Fondos en Avance'},{name:'Reembolso'},{name:'Orden de Compra'},{name:'Contrato'}],
         columns: [
              {
                 label: "Nombre",
@@ -314,6 +314,10 @@ export default {
 
         console.log(this.articles);
         console.log(this.providers);
+    },
+    computed:{
+
+
     },
     methods: {
         addIncome(item){
@@ -402,6 +406,58 @@ export default {
             //     });
             // }
         },
+        title_number()
+        {
+            let title = ""
+            if(this.form.type)
+            {
+                switch (this.form.type.name) {
+                    case "Fondos en Avance":
+                        title = "Numero de remision"
+                        break;
+
+                    case "Reembolso":
+                        title = "Numero de reemboloso"
+                        break;
+
+                    case "Orden de Compra":
+                        title = "Numero de Compra"
+                        break;
+
+                    case "Contrato":
+                        title = "Numero de Contrato"
+                        break;
+                }
+            }
+            return title;
+        },
+        title_date()
+        {
+            let title ="";
+
+            if(this.form.type)
+            {
+                switch (this.form.type.name) {
+                    case "Fondos en Avance":
+                        title = "Fecha de remision"
+                        break;
+
+                    case "Reembolso":
+                        title = "Fecha de reemboloso"
+                        break;
+
+                    case "Orden de Compra":
+                        title = "Fecha de Compra"
+                        break;
+
+                    case "Contrato":
+                        title = "Fecha de Contrato"
+                        break;
+                }
+            }
+
+            return title;
+        }
 
     },
     computed:{
