@@ -93,6 +93,7 @@ Vue.component('change-out', require('./components/ChangeOut.vue').default);
 
 Vue.component('change-income-edit', require('./components/RequestIncomeEdit.vue').default);
 Vue.component('change-out-edit', require('./components/RequestOutEdit.vue').default);
+Vue.component('user-history', require('./components/UserHistory.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

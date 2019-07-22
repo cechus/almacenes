@@ -73,16 +73,16 @@
                                             @break
                                         @case('Pendiente Aprobacion')
                                             <span class="badge badge-warning">Pendiente Solicitud</span>
-                                            @break    
+                                            @break
                                     @endswitch
                                 </td>
                                <td>
                                @if($item->state == 'Aprobado')
-                                   <a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('out_note/'.$item->id)}}">{{ $item->correlative_out }}</a> 
-                                @endif 
+                                   <a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('out_note/'.$item->id)}}">{{ $item->correlative_out }}</a>
+                                @endif
                                 @if($item->state == 'Entregado')
-                                   <a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('out_note/'.$item->id)}}">{{ $item->correlative_out }}</a> 
-                                @endif 
+                                   <a href="#"  class="badge badge-primary" data-toggle="modal" data-target="#modalPdf" data-url="{{url('out_note/'.$item->id)}}">{{ $item->correlative_out }}</a>
+                                @endif
                                 </td>
                                 {{--<td>
                                 @if($item->state == 'Aprobado')
@@ -90,7 +90,7 @@
                                 @endif
                                 @if($item->state == 'Entregado')
                                     <a href="#" data-toggle="modal" data-target="#modalPdf" data-url="{{url('out_note/'.$item->id)}}"> <i class="far fa-file-pdf"></i></a>
-                                @endif  
+                                @endif
                                </td>--}}
                                 <td>
                                     {{-- <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a> --}}
@@ -119,7 +119,7 @@
                                         {{-- @endif --}}
                                     @endif
                                 </td>
-                               
+
 
                             </tr>
 
@@ -133,11 +133,11 @@
             </div>
         </div>
 
-        {{-- aqui los modals --}}
         {{-- <provider-component url='{{url('provider')}}' csrf='{!! csrf_field('POST') !!}'></provider-component> --}}
 
 
     </div>
+    {{-- aqui los modals --}}
 
     <div class="modal fade" id="modalPdf" tabindex="-1" role="dialog" aria-labelledby="modalPdfTitle" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -154,6 +154,8 @@
             </div>
         </div>
     </div>
+
+
 
 @endsection
 <script>

@@ -29,7 +29,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                             <tr v-for="(item,index) in request.article_request_items" :key="index" onclick="this.style.backgroundColor = 'red', Mostrar();" >
+                                             <tr v-for="(item,index) in request.article_request_items" :key="index" >
                                                 <th scope="row">{{index+1}}</th>
                                                 <td>{{item.article.name}}</td>
                                                 <td>{{item.article.unit.name}}</td>
@@ -56,26 +56,7 @@
                       <div class="card">
                       <div class="card-body">
                         <h5>HISTORIAL DE MATERIAL SOLICITADO</h5>
-                      <table class="table  table-bordered">
-                                <thead>
-                                    <tr class="bg-gray">
-                                        <th scope="col">#</th>
-                                        <th scope="col">Articulo</th>
-                                        <th scope="col">Unidad</th>
-                                        <th scope="col" v-if="isRequestStorage">Costo Unitario</th>
-                                        <th scope="col">Cantidad Aprob.</th>
-                                        <!-- <th scope="col">Cantidad Aprob.</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                     <tr v-for="(item,index) in histories" :key="index">
-                                        <th scope="row">{{index+1}}</th>
-                                        <td>{{item.arti}}</td>
-                                        <td>{{item.unidad}}</td>
-                                        <td>{{item.cant}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <user-history :histories="histories"></user-history>
                       </div>
                       </div>
                   </div>
@@ -141,7 +122,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    
+
                     <div class="container-fluid">
                         <div class="modal-body">
                             <h5><strong>Datos del Solicitante</strong></h5>
@@ -164,7 +145,7 @@
                             <center><h3 style="color:#922d31;"><strong>ESTA SEGURO DE RECHAZAR LA SOLICITUD?</strong></h3></center>
                             <strong><label>Observaciones:</label></strong>
                             <textarea class="md-textarea form-control" rows='3' placeholder="Observaciones"></textarea>
-                        </div>   
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
@@ -177,21 +158,6 @@
     </div> <!-- end row -->
 </template>
 <script>
-@section('script')
-    
-function Mostrar()
-{
-    alert($("#table-origin tr.selected td:first").html());
-};
- @endsection
-</script>
-<script>
-$("#table-origin tr").click(function(){
-   $(this).addClass('selected').siblings().removeClass('selected');    
-   var value=$(this).find('td:first').html();
-   alert(value);    
-});
-
 
 import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
@@ -203,66 +169,12 @@ export default {
         incomes: [],
         types:[{name: 'Ingreso'},{name:'Traspaso'},{name:'Reingreso'}],
         provider:{},
-        // columns: [
-
-        //     {
-        //         label: "Articulo",
-        //         name: "article.name",
-        //         filter: {
-        //             type: "simple",
-        //             placeholder: "articulo"
-        //         },
-        //         sort: true,
-        //     },
-
-        //     {
-        //         label: "Unidad",
-        //         name: "article.unit.name",
-        //         filter: {
-        //             type: "simple",
-        //             placeholder: "unidad"
-        //         },
-        //         sort: true,
-        //     },
-
-        //     {
-        //         label: "Stock",
-        //         name: "stock.stock",
-        //         sort: true,
-        //     },
-        //     {
-        //         label: "Cantidad Solicitada",
-        //         name: "quantity",
-        //         sort: true,
-        //     },
-
-        //     {
-        //         label: "Cantidad",
-        //         name: "quantity_apro",
-        //         sort: true,
-        //     },
-        // ],
-        // config: {
-        //  card_mode: false,
-        //  checkbox_rows: false,
-        //  rows_selectable: false,
-        //  global_search:  {
-        //          placeholder:  "Enter custom Search text",
-        //          visibility: false,
-        //          case_sensitive:  false
-        //  },
-        //  show_refresh_button:  false,
-        //  show_reset_button:  false,
-        // },
         hasFile: false,
 
     }),
     mounted() {
         // this.rows = this.request;
-        console.log('esteee',this.request.article_request_items.quantity);
-        this.data = this.history;
-        this.provider = this.providers[0];
-      console.log('historia',this.history);
+        console.log('historia',this.histories);
        // console.log(this.articles);
     },
     methods: {
@@ -272,9 +184,6 @@ export default {
             item.quantity = '';
             item.cost ='';
 
-            // item2.quantity = '';
-            // item2.cost ='';
-            // console.log('esteee es',item2);
         },
         deleteIncome(index){
 
@@ -303,12 +212,10 @@ export default {
     },
     computed:{
 
-         getTotalCost(){
+        getTotalCost(){
             let cost= 0;
             this.rows.forEach(item => {
-                // this.cost += parseInt(item.cost)
                 cost += this.subTotal(item)
-                // console.log(item.cost);
             });
             return cost;
         },
@@ -317,9 +224,7 @@ export default {
             let sum = Number(item.quantity)
             this.request.article_request_items.forEach(item => {
                 quantity += Number(item.quantity)
-                // console.log('qqqq',quantity);
             });
-            // console.log('qqqq',item.request.article_request_items);
             return quantity;
         },
         isRequestStorage() {
