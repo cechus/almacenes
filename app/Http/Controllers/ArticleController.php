@@ -26,6 +26,23 @@ class ArticleController extends Controller
         return view('article.index',compact('articles','storage'));
     }
 
+    public function article_inexistencia()
+    {
+        return view('article.inexistencia');
+    }
+
+    public function search(Request $request)
+    {
+        $article = Article::where('name','=',$request->article_name)->first();
+        if($article)
+        {
+            $result= array("finded"=>true);
+        }else
+        {
+            $result= array("finded"=>false);
+        }
+        return response()->json($result) ;
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -70,6 +70,10 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('articles/{storage_id}','ArticleController@storage_article');
 
+        Route::get('article_inexistencia','ArticleController@article_inexistencia');
+
+        Route::post('article_search','ArticleController@search')->name("article_search");
+
         //array data from model
 
         Route::get('list_categories','CategoryController@getData');
@@ -95,6 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('minute_note/{article_request_id}','ReportController@minute_note');
         Route::get('kardex_fisico/{article_id}','ReportController@kardex_fisico');
         Route::get('kardex_valorado/{article_id}','ReportController@kardex_valorado');
+        Route::get('article_inexistencia_report','ReportController@article_inexistencia');
 
         Route::group(['middleware' => ['role:Administrador','permission:SAE']], function ()
         {
@@ -116,6 +121,9 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('reporte_Ingreso_General/{dia_inicio}/{mes_inicio}/{anio_inicio}','ReportExcelController@rptIngresoGeneralExcel');
         Route::get('reporte_Ingreso_GeneralRango/{dia_inicio}/{mes_inicio}/{anio_inicio}/{dia_fin}/{mes_fin}/{anio_fin}','ReportExcelController@rptIngresoGeneralExcelRango');
+
+
+
 
         Route::get('reporte_Salida_General/{dia_inicio}/{mes_inicio}/{anio_inicio}','ReportExcelController@rptIngresoSalidasExcel');
         Route::get('reporte_Salida_GeneralRango/{dia_inicio}/{mes_inicio}/{anio_inicio}/{dia_fin}/{mes_fin}/{anio_fin}','ReportExcelController@rptIngresoSalidasExcelRango');

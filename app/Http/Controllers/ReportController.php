@@ -486,6 +486,12 @@ class ReportController extends Controller
         //
     }
 
+    public function article_inexistencia()
+    {
+        return request('articles');
+        // $incomes = json_decode(request('incomes'));
+    }
+
 
     public function kardex_fisico($article_id)
     {
