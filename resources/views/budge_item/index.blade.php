@@ -28,7 +28,7 @@
                             <tr>
                                 <th>Id.</th>
                                 <th>Nombre</th>
-                                <th>abreviatura</th>
+                                <th>Numero</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
@@ -37,7 +37,7 @@
                             <tr>
                                 <td>{{$item->id}}</td>
                                 <td>{{$item->name}}</td>
-                                <td>{{$item->short_name}}</td>
+                                <td>{{$item->number}}</td>
 
                                 <td>
                                     {{-- <a href="{{url('action_short_term_year/'.$item->years[0]->id)}}"><i class="material-icons text-warning">folder</i></a> --}}

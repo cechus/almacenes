@@ -21,11 +21,28 @@
                                     <input type="text" class="form-control" id="name" name="name" v-model="form.name" placeholder="Nombre" v-validate="'required'">
                                     <div class="invalid-feedback">{{ errors.first("name") }}</div>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <!-- <div class="form-group col-md-4">
                                     <label for="lbcode">Codigo</label>
                                     <input type="text" class="form-control" id="code" name="code" v-model="form.code" placeholder="Codigo" v-validate="'required'">
                                     <div class="invalid-feedback">{{ errors.first("code") }}</div>
-                                </div>
+                                </div> -->
+                                <div class="form-group  col-md-4">
+                                    <input type="text" name="unit_id" v-if="form.unit" :value="form.unit.id" hidden>
+									<label for="unidad">Unidad</label>
+									<multiselect
+										v-model="form.unit"
+										:options="units"
+										id="unidad"
+										placeholder="Seleccionar unidad"
+										select-label="Seleccionar"
+										deselect-label="Remover"
+										selected-label="Seleccionado"
+										label="name"
+										track-by="name" >
+
+									</multiselect>
+									<div class="invalid-feedback">{{ errors.first("unidad") }}</div>
+								</div>
                                 <div class="form-group  col-md-6">
                                     <input type="text" name="budget_item_id" v-if="form.budget_item" :value="form.budget_item.id" hidden>
 									<label for="partida">Partida</label>
@@ -62,23 +79,7 @@
 								</div>
 
 
-                                <div class="form-group  col-md-4">
-                                    <input type="text" name="unit_id" v-if="form.unit" :value="form.unit.id" hidden>
-									<label for="unidad">Unidad</label>
-									<multiselect
-										v-model="form.unit"
-										:options="units"
-										id="unidad"
-										placeholder="Seleccionar unidad"
-										select-label="Seleccionar"
-										deselect-label="Remover"
-										selected-label="Seleccionado"
-										label="name"
-										track-by="name" >
 
-									</multiselect>
-									<div class="invalid-feedback">{{ errors.first("unidad") }}</div>
-								</div>
 							</div>
 
                         </div>

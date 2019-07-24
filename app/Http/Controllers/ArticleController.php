@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Storage;
 use App\Article;
+use App\BudgetItem;
 
 class ArticleController extends Controller
 {
@@ -68,12 +69,15 @@ class ArticleController extends Controller
         }else{
             $article = new Article;
         }
+        $bi = BudgetItem::find($request->budget_item_id);
         $article->name = $request->name;
-        $article->code = $request->code;
+        $article->code = "";
         $article->budget_item_id = $request->budget_item_id;
         $article->category_id = $request->category_id;
         // $article->provider_id = $request->provider_id;
         $article->unit_id = $request->unit_id;
+        $article->save();
+        $article->code = $bi->number."-".$article->id;
         $article->save();
 
         session()->flash('message','Se registro el Articulo '.$article->name);
