@@ -23,7 +23,7 @@
                                 </div>
 
 							</div>
-                            <input type="text" name="permissions" :value="JSON.stringify(role_permissions)" hidden>
+                            <!-- <input type="text" name="permissions" :value="JSON.stringify(role_permissions)" hidden>
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">
@@ -43,7 +43,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> -->
 
                         </div>
                         <div class="modal-footer">

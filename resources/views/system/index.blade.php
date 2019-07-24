@@ -8,7 +8,7 @@
 @section('content')
 
     <div class="row justify-content-center">
-        <div class="col-md-3">
+        {{-- <div class="col-md-3">
             <div class="card">
 
                 <div class="card-header card-calendar">
@@ -42,10 +42,9 @@
                         </tbody>
 
                     </table>
-                            {{-- <div id='calendar'></div> --}}
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         {{-- aqui los modals --}}
         <div class="col">
@@ -63,11 +62,11 @@
                 </div>
                 <div class="card-body">
 
-                    <table id="lista" class="table table-hover table-bordered dt-responsive nowrap" style="width:100%">
+                    <table id="listaRole" class="table table-hover table-bordered" >
                         <thead>
                             <tr>
                                 <th>Nombre</th>
-                                <th>Sistema</th>
+                                {{-- <th>Sistema</th> --}}
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -75,11 +74,11 @@
                             @foreach ($roles as $item)
                             <tr>
                                 <td>{{ $item->name }}</td>
-                                <td>
+                                {{-- <td>
                                     @foreach ($item->getPermissionNames() as $name)
                                         <span class="badge badge-primary">{{$name}}</span>
                                     @endforeach
-                                </td>
+                                </td> --}}
                                 <td>
                                     <a href="#" data-toggle="modal" data-target="#RoleModal" data-json="{{$item}}"><i class="material-icons text-primary">edit</i></a>
 
@@ -116,11 +115,11 @@
                         </div>
                         <div class="modal-body">
 
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Nombre del Sistema:</label>
-                                    <input type="text" class="form-control" id="name" name="name">
-                                    <input type="text" class="form-control" id="id" name="id" hidden>
-                                </div>
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Nombre del Sistema:</label>
+                                <input type="text" class="form-control" id="name" name="name">
+                                <input type="text" class="form-control" id="id" name="id" hidden>
+                            </div>
 
                         </div>
                         <div class="modal-footer">
@@ -151,48 +150,10 @@
 
         );
 
-        // var classname = document.getElementsByClassName("deleted");
-        // // console.log(classname);
-        // function deleteItem(){
+        $('#listaRole').DataTable({
+                language: spanish_lang
+        });
 
-        //     var data = JSON.parse(this.getAttribute("data-json"));
-
-        //     Swal.fire({
-        //     title: 'Esta Seguro de Inactivar '+data.name+'?',
-        //     text: "una vez inactivo no se podra utilizar el articulo!",
-        //     type: 'warning',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#3085d6',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'Si',
-        //     cancelButtonText: 'No'
-        //     }).then((result) => {
-        //     if (result.value) {
-
-        //         axios.delete(`article/${data.id}`)
-        //             .then(response=>{
-        //                 console.log(response);
-        //                 location.reload();
-        //             })
-        //             .catch(error=>{
-        //                 // handle error
-        //                 Swal.fire(
-        //                 'Error! contactese con soporte tecnico',
-        //                 ''+error,
-        //                 'error'
-        //                 )
-        //                 // console.log(error);
-        //             });
-
-
-        //     }
-        //     })
-
-        // }
-
-        // for (var i = 0; i < classname.length; i++) {
-        //     classname[i].addEventListener('click', deleteItem, false);
-        // }
 
     @endsection
 </script>

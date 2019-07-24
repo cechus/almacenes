@@ -49,12 +49,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5">
+        <!-- <div class="col-md-5">
             <div class="card">
-                <!-- <div class="card-header">
-
-                </div> -->
-                <div class="card-body">
+                   <div class="card-body">
                      <table class="table">
                         <thead>
                             <tr>
@@ -73,7 +70,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="col-md-7">
             <div class="card">
                 <!-- <div class="card-header">
@@ -84,19 +81,19 @@
                         <thead>
                             <tr>
                                 <th> Roles Asignados </th>
-                                <th> Sistemas </th>
+                                <!-- <th> Sistemas </th> -->
                                 <th> </th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(role,index) in user_roles" :key="index">
                                 <td>{{role.name}}</td>
-                                <td>
+                                <!-- <td>
 
                                     <span class="badge badge-secondary" v-for="(item,index) in role.permissions" :key="index">
                                         {{item.name}}
                                     </span>
-                                </td>
+                                </td> -->
                                 <td>
                                     <switches v-model="role.enabled" theme="bootstrap" color="primary"></switches>
                                 </td>

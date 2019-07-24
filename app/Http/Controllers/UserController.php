@@ -50,18 +50,19 @@ class UserController extends Controller
 
             $role = Role::create(['name' => $request->name]);
         }
+        $role->givePermissionTo('SAE');
         // return $request->all();
-        $permissions = json_decode($request->permissions);
-        foreach ($permissions as $permission)
-        {
-            # code...
-            if($permission->enabled)
-            {
-                $role->givePermissionTo(''.$permission->name);
-            }else {
-                $role->revokePermissionTo(''.$permission->name);
-            }
-        }
+        // $permissions = json_decode($request->permissions);
+        // foreach ($permissions as $permission)
+        // {
+        //     # code...
+        //     if($permission->enabled)
+        //     {
+        //         $role->givePermissionTo(''.$permission->name);
+        //     }else {
+        //         $role->revokePermissionTo(''.$permission->name);
+        //     }
+        // }
 
         return back()->withInput();
     }
@@ -89,17 +90,9 @@ class UserController extends Controller
 
         $user = User::find($request->id);
         // return $user;
-        $permissions = json_decode($request->permissions);
+        // $permissions = json_decode($request->permissions);
+        $user->givePermissionTo('SAE');
         $roles = json_decode($request->roles);
-        foreach($permissions as $permission){
-
-            if($permission->enabled)
-            {
-                $user->givePermissionTo($permission->name);
-            }else{
-                $user->revokePermissionTo($permission->name);
-            }
-        }
 
         foreach($roles as $role){
 

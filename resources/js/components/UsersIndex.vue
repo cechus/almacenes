@@ -84,7 +84,7 @@ export default {
             },
             {
                 label: "Nombres",
-                name: "person.prs_nombres",
+                name: "employee.first_name",
                 filter: {
                     type: "simple",
                     placeholder: "Nombres"
@@ -93,7 +93,7 @@ export default {
             },
             {
                 label: "Apellido Paterno",
-                name: "person.prs_paterno",
+                name: "employee.last_name",
                 filter: {
                     type: "simple",
                     placeholder: "Parterno"
@@ -102,7 +102,7 @@ export default {
             },
             {
                 label: "Apellido Materno",
-                name: "person.prs_materno",
+                name: "employee.mother_last_name",
                 filter: {
                     type: "simple",
                     placeholder: "Materno"
