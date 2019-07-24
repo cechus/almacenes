@@ -16,7 +16,18 @@
                     <h4 class="card-title ">
                         Ingresos {{Auth::user()->getStorage()->name}}
                         <small class="float-sm-right">
-                            <a href="{{url('income/create')}}" class="btn btn-success btn-sm">Nuevo Ingreso  <i class="fa fa-plus-circle"></i></a>
+                            <a href="{{url('income/create')}}" class="btn btn-success btn-sm"><i class="fa fa-plus-circle"></i> Nuevo Ingreso </a>
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-clock"></i> Historial
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="Orden de Compra">Orden de Compra</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="Numero de Contrato">Numero de Contrato</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="Fondos en Avance">Fondos en Avance</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="Reembolso">Reembolso</a>
+                                </div>
+                            </div>
                         </small>
                     </h4>
                 </div>
@@ -88,6 +99,8 @@
             </div>
         </div>
     </div>
+
+    <income-history ></income-history>
 
 @endsection
 <script>

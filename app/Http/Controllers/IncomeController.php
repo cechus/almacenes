@@ -32,7 +32,8 @@ class IncomeController extends Controller
 
     public function history(Request $request)
     {
-        return $request->all();
+        $income_histories = ArticleIncome::with('provider','employee')->where('storage_id',Auth::user()->getStorage()->id)->where('type',$request->type)->get();
+        return response()->json($income_histories);
     }
 
     // public function storage_article($storage_id){

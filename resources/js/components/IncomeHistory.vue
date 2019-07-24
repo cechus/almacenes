@@ -12,6 +12,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <vue-bootstrap4-table :rows="histories" :columns="columns" :config="config">
+                        <template slot="sort-asc-icon">
+                            <i class="fa fa-sort-asc"></i>
+                        </template>
+                        <template slot="sort-desc-icon">
+                            <i class="fa fa-sort-desc"></i>
+                        </template>
+                        <template slot="no-sort-icon">
+                            <i class="fa fa-sort"></i>
+                        </template>
+
+                    </vue-bootstrap4-table>
 
                 </div>
                 <!-- <div class="modal-footer">
@@ -23,11 +35,48 @@
     </div>
 </template>
 <script>
+import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
     data:()=>({
         histories:[],
         type:'',
-        title:''
+        title:'',
+        rows: [],
+        columns: [
+            {
+                label: "Fecha",
+                name: "created_at",
+                sort: true,
+            },
+            {
+                label: "Proveedor",
+                name: "provider.first_name",
+                sort: true,
+            },
+            {
+                label: "Numero",
+                name: "number",
+                sort: true,
+            },
+            {
+                label: "Fecha de Ingreso",
+                name: "date",
+                sort: true,
+            },
+
+        ],
+        config: {
+			card_mode: false,
+			checkbox_rows: false,
+			rows_selectable: false,
+			global_search:  {
+					placeholder:  "Enter custom Search text",
+					visibility: false,
+					case_sensitive:  false
+			},
+			show_refresh_button:  false,
+			show_reset_button:  false,
+        },
     }),
     mounted()
     {
@@ -38,40 +87,37 @@ export default {
 
             console.log(type);
             switch (type) {
-                case "orden_de_compra":
+                case "Orden de Compra":
                     this.title = "Historial de Orden de Compra";
-
+                    this.search(type);
                     break;
-                case "numero_de_contrato":
+                case "Numero de Contrato":
                     this.title = "Historial de Numero de Contrato";
+                    this.search(type);
                     break;
-                case "fondos_en_avance":
-                    this.title = "Historial de Orden de Compra";
+                case "Fondos en Avance":
+                    this.title = "Historial de Fondos en Avance";
+                    this.search(type);
                     break;
-                case "reembolso":
-                    this.title = "Historial de Orden de Compra";
+                case "Reembolso":
+                    this.title = "Historial de Reembolso";
+                    this.search(type);
                     break;
-
             }
-            // this.title ='Nueva Articulo ';
-            // if(article)
-            // {
-            //     this.title='Editar '+article.name;
-
-            //     axios.get(`article/${article.id}`).then(response=>{
-            //             this.form = response.data.article;
-            //             console.log(this.form);
-            //     });
-
-            //     // this.form = article;
-            // }else
-            // {
-            //     this.form={};
-
-            // }
-            // console.log(article);
 
         })
+
+
+    },
+    methods:{
+        search(type){
+             axios.post(`income_history`,{type:type}).then(response=>{
+                 console.log(response.data);
+                 this.histories = response.data;
+                    // this.form = response.data;
+                    //console.log(this.form);
+            });
+        }
     }
 }
 </script>
