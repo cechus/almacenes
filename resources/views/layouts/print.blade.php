@@ -36,10 +36,12 @@
                                 <td class="text-center bg-grey-darker text-xxs text-white">Usuario</td>
                                 <td class="text-xs">{!! $username !!}</td>
                             </tr>
+                            @if(isset($code))
                             <tr>
                                 <td class="text-center bg-grey-darker text-xxs text-white">Codigo</td>
                                 <td class="text-xs">{!! $code !!}</td>
                             </tr>
+                            @endif
                         </tbody>
                     </table>
 

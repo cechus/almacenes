@@ -16,9 +16,9 @@
                     <h4 class="card-title ">
                         Articulos General
                         <small class="float-sm-right">
-                            {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
                             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ArticleModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button>
-                            <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#ArticleModal" > Inexistencia <i class="fa fa-search"></i> </button>
+                            <a href="{{url('article_inexistencia')}}" class="btn btn-secondary btn-sm"> Formulario de Inexistencia <i class="fa fa-file-pdf"></i> </a>
+                            {{-- <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#ArticleModal" > Inexistencia <i class="fa fa-search"></i> </button> --}}
                         </small>
                     </h4>
                 </div>

@@ -488,7 +488,30 @@ class ReportController extends Controller
 
     public function article_inexistencia()
     {
-        return request('articles');
+        $articles = json_decode(request('articles'));
+        $username = Auth::user()->usr_usuario;
+        $date =Carbon::now();
+        $count=1;
+        $quantity=0;
+        // $storage =  '';
+        // $code =  '.$date->year';
+        $title = "KARDEX DE INEXISTENCIA DE MATERIALES Y SUMINISTROS";
+        $view = \View::make('report.article_inexistente',compact('articles','count','title','date','username'));
+        $html_content = $view->render();
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html_content);
+
+        // (Optional) Setup the paper size and orientation
+        // $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('letter');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream('my.pdf',array('Attachment'=>0));
+
+        // return response()->json($articles);
         // $incomes = json_decode(request('incomes'));
     }
 

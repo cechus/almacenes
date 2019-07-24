@@ -19,12 +19,12 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-secondary"> <i class="fa fa-print"></i> </button>
+                    <button class="btn btn-secondary"> <i class="fa fa-file-import"></i> </button>
                 </div>
             </div>
         </div>
         <div class="col-md-7">
-            <iframe :src="url" class="col-md-12" frameborder="0"></iframe>
+            <iframe :src="getUrl" class="col-md-12" frameborder="0" height="400px"></iframe>
         </div>
     </div>
 </template>
@@ -37,6 +37,7 @@ export default {
     }),
     mounted(){
         console.log(this.url);
+
     },
     methods:
     {
@@ -49,11 +50,18 @@ export default {
             .then( (response)=> {
 
                 console.log(response.data.finded);
-                if(response.data.finded == false)
+                if(this.article_search != "")
                 {
-                    this.articles.push({name:this.article_search});
-                    // this.article_search ="";
-                    console.log("add XD");
+                    if(response.data.finded == false)
+                    {
+                        this.articles.push({name: this.article_search.trim() });
+                        this.article_search ="";
+                        // console.log("add XD");
+                    }else{
+                        toastr.info("el producto "+this.article_search+" ha sido registrado con anterioridad", 'Alerta' );
+                    }
+                }else{
+                    toastr.info("Debe escribir un producto a buscar", 'Alerta' );
                 }
                 // if(!response.data.finded){
                 //     this.articles.push({name:this.article_search});
@@ -70,6 +78,12 @@ export default {
         {
             this.articles.splice(index,1);
         },
+    },
+    computed:{
+        getUrl(){
+            let url = this.url+'/article_inexistencia_report?articles='+encodeURIComponent(JSON.stringify(this.articles))
+            return url;
+        }
     }
 }
 </script>
