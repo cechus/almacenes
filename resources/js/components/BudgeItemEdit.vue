@@ -22,6 +22,11 @@
                                     <input type="text" class="form-control" id="name" name="name" v-model="form.name" placeholder="Nombre" v-validate="'required'">
                                     <div class="invalid-feedback">{{ errors.first("name") }}</div>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="lbname">Numero</label>
+                                    <input type="text" class="form-control" id="number" name="number" v-model="form.number" placeholder="Numero" v-validate="'required|numeric'">
+                                    <div class="invalid-feedback">{{ errors.first("number") }}</div>
+                                </div>
                                 <div class="form-group col-md-12">
                                     <label for="lbdescription">Descripcion</label>
                                     <input type="text" class="form-control" id="description" name="description" v-model="form.description" placeholder="Descripcion" v-validate="'required'">

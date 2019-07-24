@@ -16,6 +16,7 @@ class CreateBudgetItemsTable extends Migration
         Schema::create('sisme.budget_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string("name");
+            $table->integer("number");
             $table->string("description")->nullable();
             $table->timestamps();
             $table->softDeletes();

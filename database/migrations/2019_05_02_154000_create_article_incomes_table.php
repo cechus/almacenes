@@ -31,6 +31,7 @@ class CreateArticleIncomesTable extends Migration
             $table->unsignedInteger('correlative')->index();
             $table->unique( array('storage_id','correlative'));
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
