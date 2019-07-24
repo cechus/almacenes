@@ -30,6 +30,11 @@ class IncomeController extends Controller
 
     }
 
+    public function history(Request $request)
+    {
+        return $request->all();
+    }
+
     // public function storage_article($storage_id){
     //     $storage = Storage::find($storage_id);
     //     //$articles = Article::where('storage_id',$storage_id)->get();

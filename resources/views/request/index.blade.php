@@ -17,6 +17,19 @@
                         {{$title??'Solicitudes Recibidas '.Auth::user()->getStorage()->name}}
                         <small class="float-sm-right">
                             {{-- <a href="{{url('amp_report_excel')}}" class="btn btn-success btn-sm"><i class="fa fa-file-excel-o"></i> </a>  --}}
+
+                            <div class="btn-group" role="group">
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-clock"></i> Historial
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="orden_de_compra">Orden de Compra</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="numero_de_contrato">Numero de Contrato</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="fondos_en_avance">Fondos en Avance</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#historyModal" data-type="reembolso">Reembolso</a>
+                                </div>
+                            </div>
+                            {{-- <button class="btn btn-secondary" data-toggle="modal" data-target="#historyModal">  Orden de Compra</button> --}}
                             {{-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ProviderModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button> --}}
                         </small>
                     </h4>
@@ -155,7 +168,7 @@
         </div>
     </div>
 
-
+    <income-history ></income-history>
 
 @endsection
 <script>

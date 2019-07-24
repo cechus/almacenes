@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::resource('print', 'ReportController');
 
+        Route::post('income_history','IncomeController@history');
 
         Route::get('reporte_vista_previa','ReportController@vista_previa');
         Route::post('reporte_vista','ReportController@vista_previa');//create income

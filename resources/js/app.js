@@ -95,6 +95,7 @@ Vue.component('change-income-edit', require('./components/RequestIncomeEdit.vue'
 Vue.component('change-out-edit', require('./components/RequestOutEdit.vue').default);
 Vue.component('user-history', require('./components/UserHistory.vue').default);
 Vue.component('inexistencia-component', require('./components/InexistenciaComponent.vue').default);
+Vue.component('income-history', require('./components/IncomeHistory.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

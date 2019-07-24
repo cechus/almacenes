@@ -195,10 +195,10 @@
   // END SCRIPT ESTRELLAS
       $(document).ready(function() {
         // $('#modal_encuesta').modal('show');
-        <?php 
+        <?php
       Session::put('EVALUACION','NO');
       use Illuminate\Support\Facades\DB;
-      $eval_user = DB::table('public.evaluacion_sistema')->where('evalsis_id_usuario',Auth::user()->usr_id)->where('evalsis_id_sistema',2)->first(); 
+      $eval_user = DB::table('public.evaluacion_sistema')->where('evalsis_id_usuario',Auth::user()->usr_id)->where('evalsis_id_sistema',2)->first();
       // echo Session::get('EVALUACION');
       if(!$eval_user AND Session::get('EVALUACION') == 'NO'){ ?>
           $('#modal_encuesta').modal('show');
@@ -229,7 +229,7 @@
           'Debe dar su valoracion',
           'question'
         )
-                
+
     }else{
       // swal("Muchas Gracias","Esto ayudara para el mejoramiento del sistema","success")
       var route="RegistroEvalSistema";
@@ -243,15 +243,15 @@
           'primera_respuesta':primera_respuesta,
           'segunda_respuesta':segunda_respuesta,
           'tercera_respuesta':tercera_respuesta,
-          'valoracion':valoracion_estrellas,                
+          'valoracion':valoracion_estrellas,
                 },
         success: function(data){
           console.log(data);
           $("#modal_encuesta").modal('toggle');
-          // swal({ 
+          // swal({
           //                  title: "Muchas Gracias",
           //                  text: "Esto ayudará para el mejoramiento del sistema",
-          //                  type: "success" 
+          //                  type: "success"
           //               },function(){
           //                  location.reload();
           //           });
@@ -270,13 +270,13 @@
             text: 'Vuelva intentar mas tarde!',
           })
         }
-      }); 
+      });
     }
 
   });
 
   $("#NoEvaluar").click(function(){
-    <?php Session::forget('EVALUACION'); 
+    <?php Session::forget('EVALUACION');
         Session::put('EVALUACION','SI'); ?>
     // var route="RegistroEvalSistema";
     // var token =$("#token").val();
@@ -285,16 +285,16 @@
     //  headers: {'X-CSRF-TOKEN': token},
     //  type: 'POST',
     //  dataType: 'json',
-    //  data: {       
-    //    'evaluacion_estado:':'B',               
+    //  data: {
+    //    'evaluacion_estado:':'B',
   //           },
     //  success: function(data){
     //    console.log(data);
     //    $("#modal_encuesta").modal('toggle');
-    //    swal({ 
+    //    swal({
   //                   title: "Muchas Gracias",
   //                   text: "Esto ayudará para el mejoramiento del sistema",
-  //                   type: "success" 
+  //                   type: "success"
   //               },function(){
   //                   location.reload();
   //               });
@@ -303,7 +303,7 @@
     //  {
     //    swal("Opss..!", "Error al registrar el dato", "error");
     //  }
-    // });  
+    // });
   });
 
 @endsection
@@ -368,7 +368,7 @@
 
 /*STYLES ESTRELLAS */
 .starrr {
-  display: inline-block; 
+  display: inline-block;
 }
 .starrr a {
     font-size: 16px;
@@ -376,7 +376,7 @@
     cursor: pointer;
     color: #FFD119;
     /*color: yellow !important;*/
-    text-decoration: none; 
+    text-decoration: none;
 }
 #estrella{
   color: #EECF0A;

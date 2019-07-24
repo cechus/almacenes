@@ -12,10 +12,9 @@ Realizando control físico de materiales en el almacén de la oficina central se
             <td class="px-15 py text-center text-xxs ">
                 Nro.
             </td>
-            <td class="px-15 py text-center  text-xxs">
+            <td class="px-15 py text-center  text-xxs ">
                 Nombre
             </td>
-
         </tr>
     </thead>
     <tbody>
