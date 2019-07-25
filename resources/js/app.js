@@ -24,8 +24,8 @@ window.Swal = require('sweetalert2');
 window.moment = require('moment');
 window.numeral = require('numeral');
 window.toastr = require('toastr');
+window.Chart = require('chart.js');
 window.moment.locale('es');
-
 
 window.Chart = require('chart.js');
 Vue.use(VueTheMask);
@@ -96,6 +96,8 @@ Vue.component('change-out-edit', require('./components/RequestOutEdit.vue').defa
 Vue.component('user-history', require('./components/UserHistory.vue').default);
 Vue.component('inexistencia-component', require('./components/InexistenciaComponent.vue').default);
 Vue.component('income-history', require('./components/IncomeHistory.vue').default);
+
+Vue.component('consume-record', require('./components/ConsumeRecord.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

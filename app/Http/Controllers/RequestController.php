@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use App\ArticleHistory;
 use App\UserHistory;
 use App\Employee;
+use Carbon\Carbon;
 class RequestController extends Controller
 {
     /**
@@ -577,6 +578,66 @@ class RequestController extends Controller
         session()->flash('message','Rechazado'.$article_request->correlative);
         return redirect('request');
         // return $articles;
+    }
+
+    public function consume_record(Request $request)
+    {
+        // return $request->all();
+        $article_requests = ArticleRequestItem::all();
+        $storages = Storage::all();
+        $record_quantity = [];
+        $record_cost = [];
+        $labels =[];
+        $first_date = Carbon::createFromFormat('d/m/Y', $request->first_date) ;
+        $first_date->hour = 0;
+        $first_date->minute = 0;
+        $first_date->second = 0;
+        $second_date = Carbon::createFromFormat('d/m/Y', $request->second_date) ;
+        $second_date->hour = 23;
+        $second_date->minute = 59;
+        $second_date->second = 59;
+        // return $first_date;
+        foreach ($storages as $storage){
+            $quantity = 0;
+            $cost = 0;
+            $article_histories = ArticleHistory::where('storage_id',$storage->id)
+                                                ->whereBetween('created_at', [$first_date, $second_date])
+                                                ->where('type','Salida')
+                                                ->get();
+            // return $article_histories;
+            foreach($article_histories as $article_history)
+            {
+                $quantity += $article_history->quantity_desc;
+                $cost +=  ($article_history->quantity_desc * $article_history->article_income_item->cost);
+            }
+
+            // return $quantity;
+            //usar en casos extremos pero de momento nos salvamos con article histories gracias yo del pasado XD
+            // $article_requests = ArticleRequest::where('storage_destiny_id',$storage->id)
+            //                                   ->where('state','Aprobado')
+            //                                   ->orWhere('state','Engregado')
+            //                                   ->get();
+            // foreach($article_requests as $article_request)
+            // {
+            //     foreach($article_request->article_request_items as $artile_request_item)
+            //     {
+            //         $quantity += $artile_request_item->quantity;
+            //         $cost +=  ($artile_request_item->quantity * $artile_request_item->article_income_item->cost);
+            //     }
+            // }
+
+            array_push($record_quantity,$quantity);
+            array_push($record_cost,$cost);
+            array_push($labels,$storage->name);
+
+        }
+
+        // foreach($article_requests as $article_request)
+        // {
+
+        // }
+        return response()->json(compact('record_quantity','record_cost','labels'));
+        // return $request->all();
     }
 
     /**

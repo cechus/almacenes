@@ -146,6 +146,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('request_change_out/{request_change_out_id}','RequestChangeController@show_out'); //
         Route::post('confirm_out','RequestChangeController@confirmOut');
 
+        Route::post('consume_record','RequestController@consume_record')->name('consume_record');
 
         // ROUTES EVALUADOR
     // ROUTE REGISTRO EVALUACION

@@ -18,4 +18,9 @@ class ArticleRequestItem extends Model
     {
         return $this->belongsTo('App\ArticleRequest');
     }
+
+    public function article_income_item()
+    {
+        return $this->belongsTo('App\ArticleIncomeItem');
+    }
 }
