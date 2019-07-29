@@ -180,12 +180,28 @@
                         <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
 
-                        <li class="nav-item">
+                        @foreach (Auth::user()->getPermissionsViaRoles() as $item)
+                            @php
+                                $sub_menu = App\SubMenu::where('permission_id',$item->id);
+                                echo $item;
+                            @endphp
+                            @if($sub_menu)
+                                <li class="nav-item">
+                                    <a href="{{ url("/") }}" class="nav-link">
+                                    <i class="nav-icon"></i>
+                                    <p>{{$item->route}}</p>
+                                    </a>
+                                </li>
+                            @endif
+
+                        @endforeach
+
+                        {{-- <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link {{ Navigation::isActiveRoute('home') }}">
                                 <i class="nav-icon fa fa-tachometer-alt"></i>
                                 <p>Inicio</p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         {{-- <li class="nav-item">
                             <a href="{{ url('article') }}" class="nav-link {{ Navigation::isActiveRoute('article.index') }}">
@@ -428,6 +444,7 @@
 
                 <div id="app">
                     @yield('content')
+                    {{Auth::user()->getPermissions()}}
                     {{-- adicionando modal change --}}
                     @hasrole('Administrador')
                         <change-storage

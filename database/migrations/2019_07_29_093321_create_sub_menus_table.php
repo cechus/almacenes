@@ -15,8 +15,10 @@ class CreateSubMenusTable extends Migration
     {
         Schema::create('sisme.sub_menus', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('permission_id'); // XD
+            $table->foreign('permission_id')->references('id')->on('public.permissions');
             $table->string('icon');
-            $table->string('label');
+            // $table->string('label');
             $table->string('route');
             $table->enum('type', ['Menu', 'SubMenu','Link'])->default('Menu');
             $table->integer('menu_id')->nullable(); // XD

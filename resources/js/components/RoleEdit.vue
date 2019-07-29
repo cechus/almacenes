@@ -23,7 +23,7 @@
                                 </div>
 
 							</div>
-                            <!-- <input type="text" name="permissions" :value="JSON.stringify(role_permissions)" hidden>
+                            <input type="text" name="permissions" :value="JSON.stringify(role_permissions)" hidden>
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="table">
@@ -43,7 +43,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div> -->
+                            </div>
 
                         </div>
                         <div class="modal-footer">
@@ -85,31 +85,36 @@ export default {
             var button = $(event.relatedTarget) // Button that triggered the modal
             var role = button.data('json') // Extract info from data-* attributes
             this.title ='Nuevo Rol ';
-            console.log(role);
+            // console.log(role);
             if(role!=null)
             {
                 this.title='Editar '+role.name;
 
-                axios.get(`get_permission_role/${role.id}`).then(response=>{
+                axios.get(`get_permissions_role/${role.id}`).then(response=>{
                         console.log('seteando');
+                        console.log(response.data);
                         this.form = response.data.role;
                         this.role_permissions = response.data.permissions;
-                        console.log(this.form);
+                        // console.log(this.form);
                 });
 
                 // this.form = article;
             }else
             {
                 this.form={};
-                axios.get(`get_permission_role/0`).then(response=>{
+                axios.get(`get_permissions_role/0`).then(response=>{
                         // this.form = response.data.role;
-                        console.log('obteniendo lista ');
+                        console.log('obteniendo lista de id 0 ');
                         console.log(response.data);
-                        this.role_permissions = response.data.permissions;
+                        this.form = {};
+                        this.role_permissions = [];
+                        // console.log(response.data);
+                        // this.role_permissions = response.data.permissions;
 
                 });
 
             }
+            // get_permissions_role
 
 
         })

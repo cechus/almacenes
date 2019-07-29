@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\DB;
 use App\Article;
 use Carbon\Carbon;
+use App\SubMenu;
 use Session;
 class User extends Authenticatable
 {
@@ -51,10 +52,30 @@ class User extends Authenticatable
         return $this->belongsTo('App\Employee','usr_prs_id','id')->with('management');
     }
 
-    public function person()
+    public function getPermissions()
     {
-        return $this->belongsTo('App\Person','usr_prs_id','prs_id');
+        $permissions = $this->getPermissionsViaRoles();
+        $permissions_menu = [];
+        foreach($permissions as $permission){
+            if($permission->name != "SAE")
+            {
+                $sub_menu = SubMenu::where('permission_id',$permission->id)->first();
+                if($sub_menu){
+                    $permission->sub_menu = $sub_menu;
+                    //$permission_menu= $permission;
+                    array_push($permissions_menu,$permission);
+
+                }
+                // $role->sub_menu
+                // if($role->)
+            }
+        }
+        return response()->json($permissions_menu);
     }
+    // public function person()
+    // {
+    //     return $this->belongsTo('App\Person','usr_prs_id','prs_id');
+    // }
 
     // public function person(){
     //     $person = DB::table('_bp_personas')

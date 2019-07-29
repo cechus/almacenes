@@ -10,6 +10,8 @@ use App\Storage;
 use DB;
 use Log;
 use Auth;
+use App\Menu;
+use App\SubMenu;
 class UserController extends Controller
 {
     /**
@@ -27,10 +29,28 @@ class UserController extends Controller
 
     public function system()
     {
-        $permissions = Permission::all();
-        $roles = Role::all();
+        $permissions = Permission::where('id','>',7)->get();
+        $permission = Permission::where('name','SAE')->first();
+        // return json_encode($permission);
+        $roles = [];
+        foreach($permission->getRoleNames() as $role_name)
+        {
+            $role = Role::where('name',$role_name)->first();
+            array_push($roles,$role);
+        }
+
+        foreach($permissions as $permission)
+        {
+            $permission->sub_menu = SubMenu::where('permission_id',$permission->id)->first();
+        }
+        // return $permissions;
+        $menus  = Menu::all();
         // return $roles;
-        return view('system.index',compact('roles','permissions'));
+        // return $permission->getRoleNames();
+
+        // $roles = Role::all();
+        // return $roles;
+        return view('system.index',compact('roles','permissions','menus'));
     }
 
     public function changeStore(Request $request)
@@ -46,27 +66,110 @@ class UserController extends Controller
         if($request->has('id'))
         {
             $role = Role::find($request->id);
+
         }else {
 
             $role = Role::create(['name' => $request->name]);
+
         }
         $role->givePermissionTo('SAE');
         // return $request->all();
-        // $permissions = json_decode($request->permissions);
-        // foreach ($permissions as $permission)
-        // {
-        //     # code...
-        //     if($permission->enabled)
-        //     {
-        //         $role->givePermissionTo(''.$permission->name);
-        //     }else {
-        //         $role->revokePermissionTo(''.$permission->name);
-        //     }
-        // }
+        $permissions = json_decode($request->permissions);
+        foreach ($permissions as $permission)
+        {
+            # code...
+            if($permission->enabled)
+            {
+                $role->givePermissionTo($permission->id);
+            }else {
+                $role->revokePermissionTo($permission->id);
+            }
+        }
 
         return back()->withInput();
     }
 
+    public function storeMenu(Request $request)
+    {
+        // return $request->all();
+
+        if($request->id != null)
+        {
+            $menu = Menu::find($request->id);
+
+
+        }else
+        {
+            $menu = new Menu;
+
+        }
+        //return $menu;
+        $menu->label = $request->label;
+        $menu->icon = $request->icon;
+
+        $menu->save();
+
+
+        return back()->withInput();
+
+    }
+
+    public function storePermission(Request $request)
+    {
+        // return $request->all();
+        if($request->has('id'))
+        {
+            $permission = Permission::find($request->id);
+            $exist = true;
+        }else
+        {
+            $permission = new Permission;
+            $exist = false;
+            // $permission = Permission::create(['name' => $request->name]);
+        }
+        // return $permission;
+        $permission->name = $request->name;
+        $permission->guard_name = "web";
+        $permission->save();
+
+
+
+        if(!$exist){
+            $sub_menu = new SubMenu;
+            $sub_menu->permission_id = $permission->id;
+            $sub_menu->icon = $request->icon;
+            $sub_menu->route = $request->route;
+            $sub_menu->type = $request->type;
+            $sub_menu->menu_id = $request->menu_id;
+            $sub_menu->save();
+
+        }
+        // $permission->name = $request->name;
+
+        return back()->withInput();
+    }
+
+    public function getPermission($permission_id){
+        $permission = Permission::find($permission_id);
+        return response()->json($permission);
+    }
+
+    public function getMenus(){
+        $menus = Menu::all();
+        return $menus;
+    }
+
+    public function getPermissionsRole($role_id){
+
+        $role = Role::find($role_id);
+        $permissions = Permission::where('id','>',7)->get();
+        foreach($permissions as $permission)
+        {
+            $permission->enabled = $role->hasPermissionTo($permission->id)?true:false;
+        }
+        // $role->permissions = $role->getPermissionNames();
+        return response()->json(compact('role','permissions'));
+    }
     /**
      * Show the form for creating a new resource.
      *

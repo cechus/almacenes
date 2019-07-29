@@ -108,6 +108,12 @@ Route::group(['middleware' => ['auth']], function () {
             Route::resource('user', 'UserController');
             Route::get('system','UserController@system');
             Route::post('store_system','UserController@storeSystem')->name('save_system');
+            Route::post('store_permission','UserController@storePermission')->name('store_permission');
+            Route::post('store_menu','UserController@storeMenu')->name('store_menu');
+            Route::get('get_permission/{permission_id}','UserController@getPermission')->name('get_permission');
+            Route::get('get_menus','UserController@getMenus')->name('get_menus');
+            Route::get('get_permissions_role/{role_id}','UserController@getPermissionsRole')->name('get_permissions_role');
+
         });
 
         //reportes Excel

@@ -98,6 +98,7 @@ Vue.component('inexistencia-component', require('./components/InexistenciaCompon
 Vue.component('income-history', require('./components/IncomeHistory.vue').default);
 
 Vue.component('consume-record', require('./components/ConsumeRecord.vue').default);
+Vue.component('permission-edit', require('./components/PermissionEdit.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
