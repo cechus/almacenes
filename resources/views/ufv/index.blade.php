@@ -14,7 +14,7 @@
                 <div class="card-header card-calendar">
 
                     <h4 class="card-title ">
-                        Articulos General
+                        Ufvs
                         <small class="float-sm-right">
                             <a href="{{url('report_excel_ufv')}}" class="btn btn-success btn-sm"><i class="fa fa-file" aria-hidden="true"></i> EXPORTAR EXCEL</a>
                             <!-- <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#ArticleModal" data-json="null" > Nuevo  <i class="fa fa-plus-circle"></i> </button> -->
@@ -75,7 +75,7 @@
 <script>
 
     @section('script')
-        
+
         $('#lista_ufv').DataTable({
             responsive: true,
             columnDefs: [
