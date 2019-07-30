@@ -70,7 +70,8 @@ class User extends Authenticatable
                 // if($role->)
             }
         }
-        return response()->json($permissions_menu);
+        $r = json_encode($permissions_menu);
+        return $r;
     }
     // public function person()
     // {

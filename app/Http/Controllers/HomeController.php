@@ -40,6 +40,6 @@ class HomeController extends Controller
         ->where('state', '=', 'Rechazado')
         ->count();
 
-        return view('home',compact('abrobado','entregado','pendiente','rechazado','aprobado'));
+        return view('home',compact('entregado','pendiente','rechazado','aprobado'));
     }
 }

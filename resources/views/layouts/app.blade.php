@@ -182,19 +182,24 @@
 
                         @foreach (Auth::user()->getPermissionsViaRoles() as $item)
                             @php
-                                $sub_menu = App\SubMenu::where('permission_id',$item->id);
-                                echo $item;
+                                $sub_menu = App\SubMenu::where('permission_id',$item->id)->where("type","Menu")->first();
+                                // echo $sub_menu;
                             @endphp
-                            @if($sub_menu)
+                            @if( isset($sub_menu->id))
+                                {{-- {{ json_encode($sub_menu)}} --}}
                                 <li class="nav-item">
-                                    <a href="{{ url("/") }}" class="nav-link">
-                                    <i class="nav-icon"></i>
-                                    <p>{{$item->route}}</p>
+                                    <a href="{{ url($sub_menu->route) }}" class="nav-link">
+                                    <i class="nav-icon {{$sub_menu->icon}}"></i>
+                                    <p>{{$item->name}}</p>
                                     </a>
                                 </li>
                             @endif
 
                         @endforeach
+
+                        {{-- @foreach (Auth::user()->getPermissions() as $role)
+                            {{($role)}}
+                        @endforeach --}}
 
                         {{-- <li class="nav-item">
                             <a href="{{ url('/') }}" class="nav-link {{ Navigation::isActiveRoute('home') }}">
