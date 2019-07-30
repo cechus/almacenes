@@ -214,14 +214,14 @@
                                 <p>Articulos</p>
                             </a>
                         </li> --}}
-                        @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central|Jefe de Planta')
+                        {{-- @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central|Jefe de Planta')
                         <li class="nav-item">
                             <a href="{{ url('stock') }}" class="nav-link {{ Navigation::isActiveRoute('stock.index') }}">
                                 <i class="nav-icon fa fa-cubes"></i>
                                 <p>Stock</p>
                             </a>
                         </li>
-                        @endhasanyrole
+                        @endhasanyrole --}}
 
                         @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
                         <li class="nav-item">
@@ -449,7 +449,7 @@
 
                 <div id="app">
                     @yield('content')
-                    {{Auth::user()->getPermissions()}}
+                    {{-- {{Auth::user()->getPermissions()}} --}}
                     {{-- adicionando modal change --}}
                     @hasrole('Administrador')
                         <change-storage

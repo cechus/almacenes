@@ -29,7 +29,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th>Sistema</th>
+                                                <th>Accesos para el Rol</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
