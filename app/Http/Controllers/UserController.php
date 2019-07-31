@@ -166,6 +166,14 @@ class UserController extends Controller
         foreach($permissions as $permission)
         {
             $permission->enabled = $role->hasPermissionTo($permission->id)?true:false;
+
+            $sub_menu = SubMenu::with('menu')->where('permission_id',$permission->id)->where('type','SubMenu')->first();
+
+            if($sub_menu)
+            {
+                $permission->sub_menu = $sub_menu;
+            }
+
         }
         // $role->permissions = $role->getPermissionNames();
         return response()->json(compact('role','permissions'));
@@ -240,8 +248,9 @@ class UserController extends Controller
         }
 
         $permissions = Permission::all();
-        Log::info($permissions->count());
-        foreach ($permissions as $permission) {
+        // Log::info($permissions->count());
+        foreach ($permissions as $permission)
+        {
 
            if($role){
 

@@ -73,6 +73,39 @@ class User extends Authenticatable
         $r = json_encode($permissions_menu);
         return $r;
     }
+    public function hasMenu($menu)
+    {
+        $has_menu = false;
+        foreach ($this->getPermissionsViaRoles() as $permission)
+        {
+            $sub_menu = SubMenu::where('permission_id',$permission->id)->where("type","SubMenu")->first();
+            if($sub_menu)
+            {
+                if($sub_menu->menu_id == $menu->id)
+                {
+                    $has_menu = true;
+                }
+            }
+        }
+        return $has_menu;
+    }
+
+    public function hasSubMenu($sub_menu_in)
+    {
+        $has_sub_menu = false;
+        foreach ($this->getPermissionsViaRoles() as $permission)
+        {
+            $sub_menu = SubMenu::where('permission_id',$permission->id)->where("type","SubMenu")->first();
+            if($sub_menu)
+            {
+                if($sub_menu->id == $sub_menu_in->id)
+                {
+                    $has_sub_menu = true;
+                }
+            }
+        }
+        return $has_sub_menu;
+    }
     // public function person()
     // {
     //     return $this->belongsTo('App\Person','usr_prs_id','prs_id');

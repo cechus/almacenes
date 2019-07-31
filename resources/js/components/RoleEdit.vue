@@ -35,7 +35,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(permision,index) in role_permissions" :key="index">
-                                                <td>{{permision.name}}</td>
+                                                <td>{{permision.sub_menu?permision.sub_menu.menu.label+' > ':''}}  {{permision.name}}</td>
                                                 <td>
                                                     <switches v-model="permision.enabled" theme="bootstrap" color="primary"></switches>
                                                 </td>

@@ -197,6 +197,35 @@
 
                         @endforeach
 
+
+                        @foreach(App\Menu::all() as $menu)
+                            @if(Auth::user()->hasMenu($menu))
+                            <li class="nav-item has-treeview menu-close">
+                                <a href="#" class="nav-link">
+                                <i class="nav-icon {{$menu->icon}}"></i>
+                                    <p>
+                                        {{$menu->label}}
+                                        <i class="right fa fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+
+
+                                    @foreach (App\SubMenu::all() as $sub_menu)
+                                        @if(Auth::user()->hasSubMenu($sub_menu))
+                                            <li class="nav-item">
+                                                <a href="{{ url('storages') }}" class="nav-link">
+                                                    <i class="nav-icon fa fa-store-alt"></i>
+                                                    <p>{{$sub_menu->permission->name}}</p>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </li>
+                            @endif
+                        @endforeach
+
                         {{-- @foreach (Auth::user()->getPermissions() as $role)
                             {{($role)}}
                         @endforeach --}}
