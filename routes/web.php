@@ -28,7 +28,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('category', 'CategoryController');
         Route::resource('budge_item', 'BudgeItemController');
         Route::resource('storages', 'StorageController');
-        Route::resource('article', 'ArticleController');
+        Route::group(['middleware' => ['permission:Articulos']], function () {
+            Route::resource('article', 'ArticleController');
+        });
         Route::resource('income', 'IncomeController');
         Route::resource('stock', 'StockController');
         Route::resource('request', 'RequestController');

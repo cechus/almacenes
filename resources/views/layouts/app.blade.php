@@ -210,12 +210,11 @@
                                 </a>
                                 <ul class="nav nav-treeview">
 
-
-                                    @foreach (App\SubMenu::all() as $sub_menu)
+                                    @foreach (App\SubMenu::where('menu_id',$menu->id)->get() as $sub_menu)
                                         @if(Auth::user()->hasSubMenu($sub_menu))
                                             <li class="nav-item">
-                                                <a href="{{ url('storages') }}" class="nav-link">
-                                                    <i class="nav-icon fa fa-store-alt"></i>
+                                                <a href="{{ url($sub_menu->route) }}" class="nav-link">
+                                                <i class="nav-icon {{$sub_menu->icon}}"></i>
                                                     <p>{{$sub_menu->permission->name}}</p>
                                                 </a>
                                             </li>
