@@ -196,12 +196,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
 
         $user = User::find($request->id);
-        // return $user;
-        // $permissions = json_decode($request->permissions);
         $user->givePermissionTo('SAE');
         $roles = json_decode($request->roles);
 

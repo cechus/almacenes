@@ -15,16 +15,16 @@ class AccessRoleSeeder extends Seeder
     public function run()
     {
         //
-        // $menus = [
-        //     ["label"=>"Traspaso","icon"=>"fa fa-people-carry"],
-        //     ["label"=>"Datos","icon"=>"fa fa-window-restore"],
-        //     ["label"=>"Reportes","icon"=>"fa fa-window-restore"],
-        // ];
+        $menus = [
+            ["label"=>"Traspaso","icon"=>"fa fa-people-carry"],
+            ["label"=>"Datos","icon"=>"fa fa-window-restore"],
+            ["label"=>"Reportes","icon"=>"fa fa-window-restore"],
+        ];
 
-        // foreach($menus as $menu)
-        // {
-        //     App\Menu::create($menu);
-        // }
+        foreach($menus as $menu)
+        {
+            App\Menu::create($menu);
+        }
 
         $permission = Permission::create(['name' => 'Inicio']);
         $sub_menu = SubMenu::create(['icon'=>'fa fa-tachometer-alt','route'=>'/','type'=>'Menu','permission_id'=>$permission->id ]);
