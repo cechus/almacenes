@@ -251,7 +251,7 @@
                         </li>
                         @endhasanyrole --}}
 
-                        @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
+                        {{-- @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
                         <li class="nav-item">
                             <a href="{{ url('income') }}" class="nav-link {{ Navigation::isActiveRoute('income.index') }}">
                                 <i class="nav-icon fa fa-parachute-box"></i>
@@ -281,7 +281,7 @@
                                     <p>Solicitudes de Modificacion</p>
                                 </a>
                             </li>
-                        @endhasanyrole
+                        @endhasanyrole --}}
                         @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
                         <li class="nav-item has-treeview menu-close">
                             <a href="#" class="nav-link">
