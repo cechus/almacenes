@@ -16,20 +16,20 @@ class AccessRoleSeeder extends Seeder
     public function run()
     {
 
-        // $permission = Permission::create(['name' => 'Inicio']);
-        // SubMenu::create(['icon'=>'fa fa-tachometer-alt','route'=>'/','type'=>'Menu','permission_id'=>$permission->id ]);
+        $permission = Permission::create(['name' => 'Inicio']);
+        SubMenu::create(['icon'=>'fa fa-tachometer-alt','route'=>'/','type'=>'Menu','permission_id'=>$permission->id ]);
 
-        // $permission = Permission::create(['name' => 'Stock']);
-        // SubMenu::create(['icon'=>'fa fa-cubes','route'=>'stock','type'=>'Menu','permission_id'=>$permission->id ]);
+        $permission = Permission::create(['name' => 'Stock']);
+        SubMenu::create(['icon'=>'fa fa-cubes','route'=>'stock','type'=>'Menu','permission_id'=>$permission->id ]);
 
-        // $permission = Permission::create(['name' => 'Ingresos']);
-        // SubMenu::create(['icon'=>'fa fa-parachute-box','route'=>'income','type'=>'Menu','permission_id'=>$permission->id ]);
+        $permission = Permission::create(['name' => 'Ingresos']);
+        SubMenu::create(['icon'=>'fa fa-parachute-box','route'=>'income','type'=>'Menu','permission_id'=>$permission->id ]);
 
-        // $permission = Permission::create(['name' => 'Mis Solicitudes']);
-        // SubMenu::create(['icon'=>'fa fa-boxes','route'=>'request_person','type'=>'Menu','permission_id'=>$permission->id ]);
+        $permission = Permission::create(['name' => 'Mis Solicitudes']);
+        SubMenu::create(['icon'=>'fa fa-boxes','route'=>'request_person','type'=>'Menu','permission_id'=>$permission->id ]);
 
-        // $permission = Permission::create(['name' => 'Solicitudes Recibidas']);
-        // SubMenu::create(['icon'=>'fa fa-truck-loading','route'=>'request_change','type'=>'Menu','permission_id'=>$permission->id ]);
+        $permission = Permission::create(['name' => 'Solicitudes Recibidas']);
+        SubMenu::create(['icon'=>'fa fa-truck-loading','route'=>'request_change','type'=>'Menu','permission_id'=>$permission->id ]);
 
         $menu = Menu::create(["label"=>"Traspaso","icon"=>"fa fa-people-carry"]);
 

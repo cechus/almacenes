@@ -282,7 +282,7 @@
                                 </a>
                             </li>
                         @endhasanyrole --}}
-                        @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
+                        {{-- @hasanyrole('Administrador|Encargado de Almacen|Encargado de Oficina Central')
                         <li class="nav-item has-treeview menu-close">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-people-carry"></i>
@@ -396,7 +396,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
 
 
 
