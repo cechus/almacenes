@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 |
 */
 Route::get('loginbyuri/{user_id}','UserController@byuri');
+Route::get('test_print','ReportController@test_print');
 
 Auth::routes();
 

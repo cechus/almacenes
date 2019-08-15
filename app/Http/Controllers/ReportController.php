@@ -21,6 +21,7 @@ use App\ArticleHistory;
 use Illuminate\Support\Facades\DB;
 use resource\js\components\IncomeCreate;
 use Log;
+use App;
 class ReportController extends Controller
 {
     /**
@@ -36,20 +37,23 @@ class ReportController extends Controller
         $storage = Auth::user()->getStorage()->name;
         // // $html = '<h1>Hello world</h1>';
         // return view('layouts.print', compact('username','date','title'));
-         $view = \View::make('layouts.print', compact('username','date','title','storage'));
+        $view = \View::make('layouts.print', compact('username','date','title','storage'));
         $html_content = $view->render();
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($html_content);
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML($html_content);
+        return $pdf->inline();
+        // $dompdf = new Dompdf();
+        // $dompdf->loadHtml($html_content);
 
-        // (Optional) Setup the paper size and orientation
-        // $dompdf->setPaper('A4', 'landscape');
-        $dompdf->setPaper('letter');
+        // // (Optional) Setup the paper size and orientation
+        // // $dompdf->setPaper('A4', 'landscape');
+        // $dompdf->setPaper('letter');
 
-        // Render the HTML as PDF
-        $dompdf->render();
+        // // Render the HTML as PDF
+        // $dompdf->render();
 
-        // Output the generated PDF to Browser
-        $dompdf->stream('my.pdf',array('Attachment'=>0));
+        // // Output the generated PDF to Browser
+        // $dompdf->stream('my.pdf',array('Attachment'=>0));
 
         // $pdf = new TCPDF();
         // $pdf::SetTitle('Hello World');
@@ -70,6 +74,11 @@ class ReportController extends Controller
         // PDF::writeHTML($html, true, false, true, false, '');
 
         // PDF::Output('hello_world.pdf');
+    }
+    public function test_print(){
+        $pdf = App::make('snappy.pdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->inline();
     }
 
     public function income_note($article_income_id)
