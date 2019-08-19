@@ -41,7 +41,7 @@ class UserController extends Controller
 
         foreach($permissions as $permission)
         {
-            $permission->sub_menu = SubMenu::where('permission_id',$permission->id)->first();
+            $permission->sub_menu = SubMenu::with('menu')->where('permission_id',$permission->id)->first();
         }
         // return $permissions;
         $menus  = Menu::all();
@@ -151,7 +151,7 @@ class UserController extends Controller
 
     public function getPermission($permission_id){
         $permission = Permission::find($permission_id);
-        return response()->json($permission);
+        return response()->json(compact('permission'));
     }
 
     public function getMenus(){

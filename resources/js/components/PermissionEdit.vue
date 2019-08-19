@@ -96,7 +96,8 @@ export default {
 
         $('#permissionModal').on('show.bs.modal',(event)=> {
             var button = $(event.relatedTarget) // Button that triggered the modal
-            var permission = button.data('json') // Extract info from data-* attributes
+            let permission = button.data('json') // Extract info from data-* attributes
+            // console.log(permission);
             this.title ='Nuevo Acceso ';
             if(permission)
             {
@@ -104,7 +105,7 @@ export default {
 
                 axios.get(`get_permission/${permission.id}`).then(response=>{
                         this.form = response.data.permission;
-                        console.log(this.form);
+                        console.log(response.data);
                 });
 
                 // this.form = permission;
