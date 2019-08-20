@@ -16,13 +16,14 @@
                 <div class="card-body">
                     <vue-bootstrap4-table :rows="rows"  :columns="columns" :config="config">
                         <template slot="sort-asc-icon">
-                            <i class="fa fa-sort-asc"></i>
+                            <i class="fa fa-sort-up"></i>
                         </template>
                         <template slot="sort-desc-icon">
-                            <i class="fa fa-sort-desc"></i>
+                            <i class="fa fa-sort-down"></i>
                         </template>
                         <template slot="option" >
-                            <i class="fa fa-sort"></i>
+                            <i class="far fa-sort-alt"></i>
+                            <!-- <i class="fas fa-sort"></i> -->
                         </template>
 
                         <template slot="quantity" slot-scope="props">
@@ -127,7 +128,9 @@
                                     deselect-label="Remover"
                                     selected-label="Seleccionado"
                                     label="name"
-                                    track-by="name" >
+                                    track-by="name"
+                                    v-validate="'required'"
+                                    >
                                 </multiselect>
                                 <div class="invalid-feedback">{{ errors.first("proveedor") }}</div>
                             </div>
@@ -143,7 +146,9 @@
                                     deselect-label="Remover"
                                     selected-label="Seleccionado"
                                     label="name"
-                                    track-by="name" >
+                                    track-by="name"
+                                    v-validate="'required'"
+                                    >
                                 </multiselect>
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
@@ -161,13 +166,13 @@
                             </div>
                             <div class="form-group  col-md-3" >
                                 <label for="tipo">{{title_number()}}</label>
-                                    <input type="text" name="number" class="form-control" v-model="form.remision_number">
+                                    <input type="text" name="number" class="form-control" v-model="form.remision_number" v-validate="'numeric'">
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
                             <div class="form-group  col-md-3" >
                                 <label for="tipo">{{title_date()}}</label>
                                 <!--<input type = "tel" v-mask = "'## / ## / ####'" />-->
-                                    <input type="tel" name="date" id="id_dia" class="form-control" v-model="form.date" v-mask = "'##/##/####'">
+                                    <input type="tel" name="date" id="id_dia" class="form-control" placeholder="dia/mes/año" v-model="form.date" v-mask = "'##/##/####'" v-validate="'date_format:dd/MM/yyyy'">
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
                             <input type="text" name="articles" :value="JSON.stringify(incomes)" hidden>

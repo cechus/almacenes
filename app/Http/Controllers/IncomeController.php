@@ -65,6 +65,13 @@ class IncomeController extends Controller
     {
         //
         // return $request->all();
+        // $request->validate([
+        //     'title' => 'required|unique:posts|max:255',
+        //     'author.name' => 'required',
+        //     'author.description' => 'required',
+        // ]); //
+
+
         $articles = json_decode($request->articles);
         // return $articles;
         $last_income = ArticleIncome::where('storage_id',Auth::user()->getStorage()->id)->max('correlative');

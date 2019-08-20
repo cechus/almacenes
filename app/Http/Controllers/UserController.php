@@ -143,6 +143,14 @@ class UserController extends Controller
             $sub_menu->menu_id = $request->menu_id;
             $sub_menu->save();
 
+        }else{
+
+            $sub_menu = SubMenu::where('permission_id',$permission->id)->first();
+            $sub_menu->icon = $request->icon;
+            $sub_menu->route = $request->route;
+            $sub_menu->type = $request->type;
+            $sub_menu->menu_id = $request->menu_id;
+            $sub_menu->save();
         }
         // $permission->name = $request->name;
 
