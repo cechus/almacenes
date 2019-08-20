@@ -7,7 +7,7 @@
 
                   {{storage.name}}: Solicitud {{request.correlative}}
                   <br>
-                   Solicitante: {{request.person.prs_nombres+' '+request.person.prs_paterno+' '+request.person.prs_materno}}
+                   Solicitante: {{request.person.first_name+' '+request.person.second_name+' '+request.person.last_name+' '+request.person.mother_last_name}}
                     <!-- {{rows}} -->
                      <small class="float-sm-right">
                            <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" ><i class="fa fa-user-check"></i> Aprobar  </button>
@@ -92,7 +92,7 @@
                         <h5>Datos del Solicitante</h5>
                         <div class="row">
                             <div class="form-group  col-md-8">
-                                <label for="tipo">Funcionario: {{request.person.prs_nombres+' '+request.person.prs_paterno+' '+request.person.prs_materno}} </label>
+                                <label for="tipo">Funcionario: {{request.person.first_name+' '+request.person.second_name+' '+request.person.last_name+' '+request.person.mother_last_name}} </label>
                                 <br><label for="tipo"> Gerencia: {{gerencia}} </label>
                             </div>
                             <div class="form-group  col-md-4">
@@ -121,7 +121,7 @@
                         </div>
                         <input type="text" name="article_request_id" :value="request.id " hidden>
                         <input type="text" name="articles" :value="JSON.stringify(rows)" hidden>
-                        <input type="text" name="type" value="Traspaso" v-if="isRequestStorage" hidden>
+                        <input type="text" name="type" value="Orden de Compra" v-if="isRequestStorage" hidden>
                         <input type="text" name="total_cost" :value="getTotalCost" v-if="isRequestStorage" hidden>
                         <h5>Detalle de Solicitud</h5>
 
@@ -241,6 +241,7 @@ export default {
     mounted() {
         this.rows = this.articles;
         this.provider = this.providers[0];
+        console.log(this.request);
         // console.log(this.articles);
         // console.log(this.gerencia);
     },
