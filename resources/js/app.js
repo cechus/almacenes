@@ -6,9 +6,10 @@
 
 require('./bootstrap');
 
-import VeeValidate from "vee-validate";
+import VeeValidate, {Validator} from "vee-validate";
 import Multiselect from 'vue-multiselect';
 import VueTheMask from 'vue-the-mask'
+import VModal from 'vue-js-modal'
 
 
 // import "gijgo";
@@ -54,6 +55,17 @@ Vue.use(VeeValidate, {
         invalid: "is-invalid"
     }
 });
+let instance = new Validator();
+instance.extend('max_current_date', {
+  getMessage: (field) => `La fecha ingresada no debe ser mayor a la fecha actual.`,
+  validate: (value) => {
+    return moment().diff(moment(value, "DD/MM/YYYY"), "days", true) > 0;
+  }
+});
+
+// modal
+Vue.use(VModal)
+
 
 /**
  * The following block of code may be used to automatically register your
