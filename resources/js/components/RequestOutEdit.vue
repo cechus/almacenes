@@ -19,7 +19,7 @@
                                 <!-- <div class="col-md-4"> Proveedor: {{form.article_income.provider.name}}</div> -->
                             </div>
                             <div class="row" v-if="form.article_request">
-                                <div class="col-md-9">  Funcionario: {{form.article_request.person.prs_nombres + ' '+form.article_request.person.prs_paterno + ' '+form.article_request.person.prs_materno}}</div>
+                                <div class="col-md-9">  Funcionario: {{form.article_request.person.first_name + ' '+form.article_request.person.second_name + ' '+form.article_request.person.last_name+' '+form.article_request.person.mother_last_name}}</div>
                             </div>
 							<div class="row"  v-if="form.article_request">
                                 <input type="text" name="request_change_out_id" :value="form.id" hidden>
@@ -30,7 +30,7 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Articulo</th>
-                                               
+
                                                 <th scope="col">Cantidad</th>
                                             </tr>
                                         </thead>
@@ -51,7 +51,7 @@
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Articulo</th>
-                                              
+
                                                 <th scope="col">Cantidad</th>
                                             </tr>
                                         </thead>
