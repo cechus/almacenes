@@ -27,17 +27,18 @@
                         </template>
 
                         <template slot="quantity" slot-scope="props">
-                            <input class='form-control' v-model="props.row.quantity" @keyup.enter="addIncome(props.row)" >
+                            <!-- v-validate="'required'" -->
+                            <input  class='form-control' v-mask="'######'" v-model="props.row.quantity" @keyup.enter="addIncome(props.row)" >
                         </template>
                         <template slot="cost" slot-scope="props">
-                            <input class='form-control' v-model="props.row.cost" @keyup.enter="addIncome(props.row)"  >
+                            <input  class='form-control' v-mask="'######'" v-model="props.row.cost" @keyup.enter="addIncome(props.row)"  >
                             <!--<input type="text" name="">-->
                         </template>
 
 
 
                         <template slot="option" slot-scope="props">
-                        <button class="btn btn-info" @click="addIncome(props.row)"><i class='fa fa-cart-plus'></i></button>
+                        <button class="btn btn-info" @click="addIncome(props.row)" data-toggle="tooltip" title="Agregar" ><i class='fa fa-cart-plus'></i></button>
 
 
                             <!-- <v-icon @click="getDetail(props)" data-toggle="modal" data-target="#taskModalDetail"
@@ -266,7 +267,7 @@ export default {
                 name: "name",
                 filter: {
                     type: "simple",
-                    placeholder: "nombre"
+                    placeholder: "buscar nombre"
                 },
                 sort: true,
             },
@@ -275,7 +276,7 @@ export default {
                 name: "budget_item.name",
                 filter: {
                     type: "simple",
-                    placeholder: "partida"
+                    placeholder: "buscar partida"
                 },
                 sort: true,
             },

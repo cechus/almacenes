@@ -63,7 +63,8 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // logger($request->all());
+        // return;
         // return $request->all();
         // $request->validate([
         //     'title' => 'required|unique:posts|max:255',
@@ -97,6 +98,7 @@ class IncomeController extends Controller
         if ($request->hasFile('path_invoice')) {
             //
             $article_income->path_invoice = $request->file('path_invoice')->store('public/invoices');
+            $article_income->invoice_date = now();
         }
         $article_income->number = $request->number;
         $article_income->date = $request->date;
@@ -191,7 +193,16 @@ class IncomeController extends Controller
     {
         //
     }
-
+    public function updateInvoiceInfo(Request $request)
+    {
+        $article_income = ArticleIncome::find($request->income_id);
+        if ($request->hasFile('path_invoice')) {
+            $article_income->path_invoice = $request->file('path_invoice')->store('public/invoices');
+            $article_income->invoice_date = now();
+            $article_income->save();
+        }
+        return redirect()->action('IncomeController@index');
+    }
     /**
      * Remove the specified resource from storage.
      *
