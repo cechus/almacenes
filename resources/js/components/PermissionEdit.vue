@@ -105,6 +105,11 @@ export default {
 
                 axios.get(`get_permission/${permission.id}`).then(response=>{
                         this.form = response.data.permission;
+                        this.form.icon = response.data.permission.sub_menu.icon;
+                        this.form.route = response.data.permission.sub_menu.route;
+                        this.form.type = {name: response.data.permission.sub_menu.type}
+                        this.form.menu = response.data.permission.sub_menu.menu;
+                        // this.form.name = response.data.permission.sub_menu.name;
                         console.log(response.data);
                 });
 

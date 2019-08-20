@@ -159,6 +159,7 @@ class UserController extends Controller
 
     public function getPermission($permission_id){
         $permission = Permission::find($permission_id);
+        $permission->sub_menu = SubMenu::with('menu')->where('permission_id',$permission->id)->first();
         return response()->json(compact('permission'));
     }
 
