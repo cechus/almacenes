@@ -60,7 +60,10 @@
                                 <td>
                                     @if($item->path_invoice)
                                     <a href="#" data-toggle="modal" data-target="#modalPdf" data-url="{{url('storage/'.substr($item->path_invoice,7))}}" > <i class="fa fa-file-invoice-dollar text-secondary"></i> </a>
-                                    @endif
+                                    @else
+                                    <a href="#" data-toggle="modal" data-target="#invoice-modal" data-target="#invoice-modal" data-id="{{$item->id}}"><i class="fa fa-plus-circle"></i></span>
+                                    </a>
+                                        @endif
                                  </td>
                                 <td>{{$item->created_at}}</td>
                                 <td>{{$item->employee->getFullName()}}</td>
@@ -79,6 +82,45 @@
         </div>
 
         {{-- aqui los modals --}}
+        {{-- <modal name="invoice-modal" class="p-sm" height="auto"> --}}
+        <div class="modal fade" id="invoice-modal" tabindex="-1" role="dialog" aria-labelledby="modalPdfTitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> Editar Informacion de la factura</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form enctype="multipart/form-data" method="post" action="/income_invoice_info" id="income-invoice-info">
+                        @csrf
+            
+                            <input type="hidden" name="income_id" id="income-id">
+                            <div class="col-md-12" >
+                                <div class="col-md-3">
+                                    <label class="control-label">Factura</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="file" required name="path_invoice">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="text-center m-sm">
+                                    {{-- <button class="btn btn-danger" type="button">
+                                    <i class="fa fa-times-circle"></i>&nbsp;&nbsp;
+                                    <span class="bold">Cancelar</span>
+                                    </button> --}}
+                                    <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-check-circle"></i>&nbsp;Guardar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
         {{-- <article-component url='{{url('article')}}' csrf='{!! csrf_field('POST') !!}' ></article-component> --}}
 
 
@@ -128,6 +170,17 @@
             var modal = $(this)
             modal.find('.modal-title').text('' )
             modal.find('.modal-body iframe').attr('src', url)
+        })
+        $('#invoice-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var incomeId = button.data('id') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            console.log(incomeId);
+            // var modal = $(this)
+            // modal.find('.modal-title').text('' )
+            // modal.find('.modal-body iframe').attr('src', url)
+            $('#income-id').val(incomeId);
         })
 
         var classname = document.getElementsByClassName("deleted");
