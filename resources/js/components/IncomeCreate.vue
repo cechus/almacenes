@@ -28,10 +28,10 @@
 
                         <template slot="quantity" slot-scope="props">
                             <!-- v-validate="'required'" -->
-                            <input  class='form-control' v-mask="'######'" v-model="props.row.quantity" @keyup.enter="addIncome(props.row)" >
+                            <input  class='form-control' v-decimal v-model="props.row.quantity" @keyup.enter="addIncome(props.row)" >
                         </template>
                         <template slot="cost" slot-scope="props">
-                            <input  class='form-control' v-mask="'######'" v-model="props.row.cost" @keyup.enter="addIncome(props.row)"  >
+                            <input  class='form-control' v-money v-model="props.row.cost" @keyup.enter="addIncome(props.row)"  >
                             <!--<input type="text" name="">-->
                         </template>
 
@@ -87,7 +87,7 @@
                                 <td>{{item.cost}}</td>
                                  <td>{{item.quantity}}</td>
                                 <td>{{subTotal(item)}}</td>
-                                <td><i class="fa fa-trash text-danger" @click="deleteIncome(index)"></i> </td>
+                                <td><i class="fa fa-trash text-danger pointer" @click="deleteIncome(index)"></i> </td>
                             </tr>
                             <tr >
                                 <td colspan="3" class="text-right " > <strong>TOTAL:</strong> </td>
@@ -173,7 +173,7 @@
                             <div class="form-group  col-md-3" >
                                 <label for="tipo">{{title_date()}}</label>
                                 <!--<input type = "tel" v-mask = "'## / ## / ####'" />-->
-                                    <input type="tel" name="date" id="id_dia" class="form-control" placeholder="dia/mes/año" v-model="form.date" v-mask = "'##/##/####'" v-validate="'date_format:dd/MM/yyyy'">
+                                    <input type="tel" name="date" id="id_dia" class="form-control" placeholder="dia/mes/año" v-model="form.date" v-date v-validate="'date_format:dd/MM/yyyy'">
                                 <div class="invalid-feedback">{{ errors.first("tipo") }}</div>
                             </div>
                             <input type="text" name="articles" :value="JSON.stringify(incomes)" hidden>
@@ -326,10 +326,21 @@ export default {
 
     },
     methods: {
+        parseMoney(value) {
+            if (!value) {
+                return 0;
+            }
+            if (typeof value === 'string'){
+                let result = value.replace(/(Bs|\s+)/ig, ``);
+                result = result.replace(/,/g, ``);
+                return parseFloat(result);
+            }
+            return (typeof value === 'number') ? parseFloat(value) : alert('error: parseMoney');
+        },
         addIncome(item){
-             console.log('articulossss',item.quantity);
-             console.log('itemtab',this.row);
-             if(item.quantity>0 && item.cost>=0)
+            //  console.log('articulossss',item.quantity);
+            //  console.log('itemtab',this.row);
+             if(this.parseMoney(item.quantity) > 0 && this.parseMoney(item.cost)>=0)
              {
                 // alert('es mayor a cero');
                 this.incomes.push({article:item,quantity:item.quantity,cost:item.cost});
@@ -345,7 +356,7 @@ export default {
              }
 
            // let cant = this.articles;
-            console.log(item);
+            // console.log(item);
         },
 
         addIncomemasivo(){
@@ -386,7 +397,8 @@ export default {
             });
         },
         subTotal(item){
-            let sum = Number(item.quantity) * Number(item.cost);
+            let sum = this.parseMoney(item.quantity) * this.parseMoney(item.cost);
+            // return sum.toFixed(2);
             return numeral(sum).format('0.00');
         },
 
@@ -468,10 +480,11 @@ export default {
     },
     computed:{
         getTotalCost(){
-            let cost= 0;
+            let cost= 0.0;
             this.incomes.forEach(item => {
                 // this.cost += parseInt(item.cost)
-                cost += Number(this.subTotal(item))
+                // cost += Number(this.subTotal(item))
+                cost += this.parseMoney(this.subTotal(item))
                 // console.log(item.cost);
             });
             return numeral(cost).format('0.00');
@@ -480,8 +493,8 @@ export default {
             let quantity= 0;
             this.incomes.forEach(item => {
                 // this.quantity += parseInt(item.quantity)
-                quantity += Number(item.quantity)
-                console.log(item.quantity);
+                // quantity += Number(item.quantity)
+                quantity += this.parseMoney(item.quantity)
             });
             return numeral(quantity).format('0.00');
         },

@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 use Log;
 use App\ArticleHistory;
 use App\UserHistory;
+use Illuminate\Validation\ValidationException;
+use Util;
+
 class IncomeController extends Controller
 {
     /**
@@ -63,14 +66,15 @@ class IncomeController extends Controller
      */
     public function store(Request $request)
     {
-        // logger($request->all());
-        // return;
-        // return $request->all();
-        // $request->validate([
-        //     'title' => 'required|unique:posts|max:255',
-        //     'author.name' => 'required',
-        //     'author.description' => 'required',
-        // ]); //
+        try {
+            $this->validate($request, [
+                'type' => 'required',
+                'articles' => 'required',
+                'provider_id' => 'required',
+            ]);
+        } catch (ValidationException  $exception) {
+            return redirect()->action('IncomeController@create')->with('error', 'Datos incompletos');
+        }
 
 
         $articles = json_decode($request->articles);
@@ -101,7 +105,7 @@ class IncomeController extends Controller
             $article_income->invoice_date = now();
         }
         $article_income->number = $request->number;
-        $article_income->date = $request->date;
+        $article_income->date = Util::parseBarDate($request->date);
 
         $article_income->save();
 
@@ -114,8 +118,8 @@ class IncomeController extends Controller
             $article_income_item = new ArticleIncomeItem;
             $article_income_item->article_income_id = $article_income->id;
             $article_income_item->article_id = $article->article->id;
-            $article_income_item->cost = $article->cost;
-            $article_income_item->quantity = $article->quantity;
+            $article_income_item->cost = Util::parseMoney($article->cost);
+            $article_income_item->quantity = Util::parseMoney($article->quantity);
             $article_income_item->save();
            // Log::info('aqui deberia lanzarse el evento'); si se lanza el problema es usar el metodo update
 
