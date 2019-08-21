@@ -152,6 +152,7 @@ class RequestController extends Controller
         $article_income->total_cost = $request->total_cost;
         // return $article_income;
         $article_income->save();
+        // return $article_income;
         //hasta aqui el registro del nuevo ingreso
 
         // return $article_request;

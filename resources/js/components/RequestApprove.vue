@@ -70,7 +70,7 @@
                 <form enctype="multipart/form-data" id='formCategory' method="post" :action="url+'/confirm_request_Approve'" @submit.prevent="validateBeforeSubmit">
                     <div v-html='csrf'></div>
                     <div class="modal-header" style="background-color:#adb5bd">
-                        <h5 style="color:ffffff" class="modal-title" id="registerModalLabel" v-if="isRequestStorage" >Aprobar Solicitud de Traspaso Nro {{request.correlative}}</h5>
+                        <h5 style="color:ffffff" class="modal-title" id="registerModalLabel" v-if="isRequestStorage"> Aprobar Solicitud de Traspaso Nro {{request.correlative}}</h5>
                         <h5 class="modal-title" id="registerModalLabel" v-else><strong>Aprobar Solicitud  Nro {{request.correlative}}</strong></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>

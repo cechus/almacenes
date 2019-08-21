@@ -14,6 +14,7 @@ use App\ArticleRequest;
 use App\Stock;
 use App\UserHistory;
 use App\ArticleHistory;
+use App\ArticleRequestItem;
 use DB;
 use Auth;
 use Log;
@@ -305,28 +306,26 @@ class RequestChangeController extends Controller
 
     //     return $request_change_income ;
     //    // return $request_change_income;
-    //     switch ($request_change_income->state) {
-    //         case 'Pendiente Aprobacion':
-    //             # code...
-    //                 $request_change_income->state = 'Pendiente';
-    //             break;
-    //         case 'Pendiente':
-    //             # code...
-    //                 $request_change_income->state = 'Pendiente1';
-    //             break;
-    //         case 'Pendiente1':
-    //             # code...
-    //                 $request_change_income->state = 'Pendiente2';
-    //             break;
-    //         case 'Pendiente2':
-    //             # code...
-    //                 $request_change_income->state = 'Aprobado';
-    //                 # colocar logica de codigo.
-
-
-    //             break;
-    //     }
-       // $request_change_income->save();
+        switch ($request_change_income->state) {
+            case 'Pendiente Aprobacion':
+                # code...
+                    $request_change_income->state = 'Aprobado';
+                break;
+            // case 'Pendiente':
+            //     # code...
+            //         $request_change_income->state = 'Pendiente1';
+            //     break;
+            // case 'Pendiente1':
+            //     # code...
+            //         $request_change_income->state = 'Pendiente2';
+            //     break;
+            // case 'Pendiente2':
+            //     # code...
+            //         $request_change_income->state = 'Aprobado';
+            //         # colocar logica de codigo.
+            //     break;
+        }
+       $request_change_income->save();
 
         return back()->withInput();
         // return $request->all();
@@ -364,6 +363,7 @@ class RequestChangeController extends Controller
 
     public function  confirmOut(Request $request)
     {
+        // return $request->all();
         $request_change_out = RequestChangeOut::find($request->request_change_out_id);
         // return $request_change_out;
         switch ($request_change_out->state) {
@@ -376,86 +376,86 @@ class RequestChangeController extends Controller
                     $request_change_out->state = 'Aprobado';
                     # colocar logica de codigo
                    // return $request_change_out;
-                    foreach($request_change_out->request_change_out_items as $out_change_item)
-                    {
+                    // foreach($request_change_out->request_change_out_items as $out_change_item)
+                    // {
 
-                        $request_change_out_item = RequestChangeOutItem::find($out_change_item->id);
-                        if($request_change_out_item->article_request_item) //si existe su entrada si no es nuevo en la modificacion
-                        {
+                    //     $request_change_out_item = RequestChangeOutItem::find($out_change_item->id);
+                    //     if($request_change_out_item->article_request_item) //si existe su entrada si no es nuevo en la modificacion
+                    //     {
 
-                            $article_request_item = ArticleRequestItem::find($request_change_out_item->article_request_item->id);
+                    //         $article_request_item = ArticleRequestItem::find($request_change_out_item->article_request_item->id);
 
-                            $article_request_item->quantity = $request_change_out_item->quantity;
-                            $article_request_item->save();
+                    //         $article_request_item->quantity = $request_change_out_item->quantity;
+                    //         $article_request_item->save();
 
-                            //para el stock verificar el flujo a seguir
-                            $stock = Stock::where('article_income_item_id',$article_request_item->article_request_item_id)->first();
-                            //return $stock;
-                            $stock->quantity += $article_request_item->quantity;
-                            //$stock->cost += $article_request_item->cost;
-                            $stock->save();
+                    //         //para el stock verificar el flujo a seguir
+                    //         $stock = Stock::where('article_income_item_id',$article_request_item->article_request_item_id)->first();
+                    //         //return $stock;
+                    //         $stock->quantity += $article_request_item->quantity;
+                    //         //$stock->cost += $article_request_item->cost;
+                    //         $stock->save();
 
-                        }else //en caso de que sea nuevo item en la modificacion
-                        {
+                    //     }else //en caso de que sea nuevo item en la modificacion
+                    //     {
 
-                            $article_request_item = new ArticleRequestItem;
-                            $article_request_item->article_income_id = $request_change_out->article_request_id;
-                            $article_request_item->article_id = $request_change_out_item->article_id;
-                            $article_request_item->quantity = 0;
-                            $article_request_item->quantity_apro = $request_change_out_item->quantity;
-                           // $article_request_item->cost = $request_change_out_item->cost;
-                            $article_request_item->save();
-
-
-
-                            $stocks = Stock::where('article_id','=',$article_request_item->article_id)
-                            ->where('storage_id',$request_change_out->storage_destiny_id)
-                            ->where('quantity','>',0)
-                            ->orderBy('created_at','Asc')
-                            ->get();
-
-                            $quantity=$article_request_item->quantity_apro;
-                            Log::warning('cantidad aprobada :'.$quantity);
-
-                            //Modulo delicado tener cuidado con este algoritmo  XD
-
-                            foreach($stocks as $stock)
-                            {
-                                Log::warning('stock: '.$stock->article->name.'  cant:'.$stock->quantity);
-
-                                    if($quantity>0)
-                                    {
-                                        if($quantity >= $stock->quantity)
-                                        {
-                                            Log::info($quantity.'>='.$stock->quantity);
-                                            $quantity = $quantity - $stock->quantity;
-                                            $descuento = $stock->quantity;//descuento que se realizo
-                                            $stock->quantity = 0;
-                                        }else
-                                        {
-                                            Log::info($quantity.'<'.$stock->quantity);
-                                            $stock->quantity = $stock->quantity - $quantity;
-                                            $descuento = $quantity;
-                                            $quantity = 0;
-                                        }
-                                        Log::info('new cant :'.$quantity);
-                                        Log::info('new stock:'.$stock->quantity);
-
-                                        $article_history = new ArticleHistory;
-                                        $article_history->article_request_item_id =$article_request_item->id;//para salida
-                                        $article_history->article_income_item_id =$stock->article_income_item_id;//para costo de ingreso
-                                        $article_history->article_id =$article_request_item->article_id;
-                                        $article_history->type ='Salida';
-                                        $article_history->quantity_desc =$descuento;
-                                        $article_history->storage_id = Auth::user()->getStorage()->id;
-                                        $article_history->save();
-                                    }
-                            }
+                    //         $article_request_item = new ArticleRequestItem;
+                    //         $article_request_item->article_income_id = $request_change_out->article_request_id;
+                    //         $article_request_item->article_id = $request_change_out_item->article_id;
+                    //         $article_request_item->quantity = 0;
+                    //         $article_request_item->quantity_apro = $request_change_out_item->quantity;
+                    //        // $article_request_item->cost = $request_change_out_item->cost;
+                    //         $article_request_item->save();
 
 
-                        }
 
-                    }
+                    //         $stocks = Stock::where('article_id','=',$article_request_item->article_id)
+                    //         ->where('storage_id',$request_change_out->storage_destiny_id)
+                    //         ->where('quantity','>',0)
+                    //         ->orderBy('created_at','Asc')
+                    //         ->get();
+
+                    //         $quantity=$article_request_item->quantity_apro;
+                    //         Log::warning('cantidad aprobada :'.$quantity);
+
+                    //         //Modulo delicado tener cuidado con este algoritmo  XD
+
+                    //         foreach($stocks as $stock)
+                    //         {
+                    //             Log::warning('stock: '.$stock->article->name.'  cant:'.$stock->quantity);
+
+                    //                 if($quantity>0)
+                    //                 {
+                    //                     if($quantity >= $stock->quantity)
+                    //                     {
+                    //                         Log::info($quantity.'>='.$stock->quantity);
+                    //                         $quantity = $quantity - $stock->quantity;
+                    //                         $descuento = $stock->quantity;//descuento que se realizo
+                    //                         $stock->quantity = 0;
+                    //                     }else
+                    //                     {
+                    //                         Log::info($quantity.'<'.$stock->quantity);
+                    //                         $stock->quantity = $stock->quantity - $quantity;
+                    //                         $descuento = $quantity;
+                    //                         $quantity = 0;
+                    //                     }
+                    //                     Log::info('new cant :'.$quantity);
+                    //                     Log::info('new stock:'.$stock->quantity);
+
+                    //                     $article_history = new ArticleHistory;
+                    //                     $article_history->article_request_item_id =$article_request_item->id;//para salida
+                    //                     $article_history->article_income_item_id =$stock->article_income_item_id;//para costo de ingreso
+                    //                     $article_history->article_id =$article_request_item->article_id;
+                    //                     $article_history->type ='Salida';
+                    //                     $article_history->quantity_desc =$descuento;
+                    //                     $article_history->storage_id = Auth::user()->getStorage()->id;
+                    //                     $article_history->save();
+                    //                 }
+                    //         }
+
+
+                    //     }
+
+                    // }
                 break;
         }
         $request_change_out->save();
