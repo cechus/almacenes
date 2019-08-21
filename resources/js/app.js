@@ -87,7 +87,7 @@ Vue.directive('decimal',{
   inserted: function(el) {
     Inputmask({
         alias: "decimal",
-        groupSeparator: ",",
+        groupSeparator: "",
         autoGroup: true,
         digits: 2,
         digitsOptional: false,

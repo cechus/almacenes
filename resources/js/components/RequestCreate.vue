@@ -18,7 +18,7 @@
                         </template>
 
                         <template slot="quantity" slot-scope="props">
-                            <input class='form-control' v-model="props.row.quantity"  @keyup.enter="addIncome(props.row)" >
+                            <input class='form-control' v-model="props.row.quantity"  @keyup.enter="addIncome(props.row)" v-decimal>
                         </template>
                         <!-- <template slot="cost" slot-scope="props">
                             <input class='form-control' v-model="props.row.cost" >
@@ -27,7 +27,7 @@
 
 
                         <template slot="option" slot-scope="props">
-                        <button class="btn btn-info" @click="addIncome(props.row)"><i class='fa fa-cart-plus'></i></button>
+                        <button class="btn btn-info" @click="addIncome(props.row)" title="agregar" :disabled="inIncomes(props.row)"><i class='fa fa-cart-plus'></i></button>
                         <!-- <button class="btn btn-info" @click="addIncome(props.row)"><i class='fa fa-cart-plus'></i></button> -->
 
 
@@ -50,7 +50,7 @@
                 <div class="card-header">
                     <!-- <i class="fa fa-shopping-cart"></i> -->
 
-                     Articulos Seleccinados
+                     Articulos Seleccionados
                       <small class="float-sm-right">
                            <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" ><i class="fa fa-shopping-cart"></i> Solicitar  </button>
                            <button class="btn btn-default" ><i class="fa fa-ban"></i> Cancelar  </button>
@@ -72,8 +72,8 @@
                                 <th scope="row">{{index+1}}</th>
                                 <td>{{item.article.name}}</td>
                                 <td>{{item.article.unit.name}}</td>
-                                <td>{{item.quantity}}</td>
-                                <td><i class="fa fa-trash text-danger" @click="deleteIncome(index)"></i> </td>
+                                <td style="text-align:right">{{item.quantity}}</td>
+                                <td><i class="fa fa-trash text-danger pointer" @click="deleteIncome(index)"></i> </td>
                             </tr>
                             <tr >
                                 <td colspan="3" class="text-right " > <strong>TOTAL:</strong> </td>
@@ -138,9 +138,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info"  @click="vistaprevia()" >Vista Previa</button>
+                        <button type="button" class="btn btn-info"  @click="vistaprevia()" :disabled="! this.incomes.length > 0 ">Vista Previa</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary" :disabled="! this.incomes.length > 0">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -166,6 +166,7 @@
     </div> <!-- end row -->
 </template>
 <script>
+import { parseMoney } from '../helper'
 import VueBootstrap4Table from 'vue-bootstrap4-table';
 export default {
     props:['articles','url','csrf','storage', 'request', 'gerencia'],
@@ -237,7 +238,14 @@ export default {
         console.log('persona',this.gerencia);
     },
     methods: {
+        inIncomes(item){
+            return this.incomes.map(x => x.article).map(x => x.article_id).includes(item.article_id);
+        },
         addIncome(item){
+            if(this.inIncomes(item)){
+                toastr.error("item ya agregado a la solicitud");
+                return;
+            }
             // console.log('articulossss',item.quantity);
             // console.log('stock', this.articles);
             //console.log('art', item.article_id);
@@ -246,7 +254,7 @@ export default {
              let cantstock = 0;
 
             //return cost;
-              if(item.quantity>0)
+              if(parseMoney(item.quantity)>0)
               {
                 // alert('es mayor a cero');
                 // this.incomes.push({article:item,quantity:item.quantity,cost:item.cost});
@@ -278,7 +286,8 @@ export default {
 
                 //this.articles.forEach(stock => {
                     console.log('cantidad',cantstock);
-                    if(item.quantity<=parseInt(cantstock))
+                    console.log(item.quantity);
+                    if(parseMoney(item.quantity)<=parseInt(cantstock))
                     {
                          this.incomes.push({article:item,quantity:item.quantity,cost:item.cost});
                          item.quantity = '';
@@ -323,7 +332,7 @@ export default {
         },
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
-                if (result) {
+                if (result && this.incomes.length > 0) {
                 let form = document.getElementById("formCategory");
 
                     form.submit();
@@ -333,8 +342,11 @@ export default {
             });
         },
          vistaprevia(){
+            if(!this.incomes.length > 0 ){
+                toastr.error('Debe completar la informacion correctamente')
+                return;
+            }
              console.log('ingreso de datos salida',this.incomes);
-
              let parameters = this.incomes;
 
             let url='/reporte_vista_RequestNote?funcionario='+encodeURIComponent(this.request.prs_nombres)+'&gerencia='+encodeURIComponent(this.gerencia)+'&solicitud='+encodeURIComponent(JSON.stringify(this.incomes));
@@ -350,7 +362,7 @@ export default {
             let quantity= 0;
             this.incomes.forEach(item => {
                 // this.quantity += parseInt(item.quantity)
-                quantity += Number(item.quantity)
+                quantity += parseMoney(item.quantity)
                 // console.log(item.quantity);
             });
             return quantity;
