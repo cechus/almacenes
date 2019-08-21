@@ -276,7 +276,6 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-        logger($request->all());
         if($request->has('storage_destiny_id'))
         {
             $storage_destiny_id = $request->storage_destiny_id;
