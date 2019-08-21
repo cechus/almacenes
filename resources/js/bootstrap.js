@@ -10,6 +10,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
     window.JSZip = require('jszip');
+    window.Inputmask = require('inputmask');
 
     require('admin-lte/plugins/datepicker/bootstrap-datepicker');
 

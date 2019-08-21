@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         // Yajra\DataTables\DataTablesServiceProvider::class,
+        // 'Util' => App\Helpers\Util::class,
 
     ],
 
