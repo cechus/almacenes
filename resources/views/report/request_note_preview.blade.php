@@ -37,10 +37,10 @@
                 <td class="text-center text-xxs uppercase font-bold px-5 py-3">{{ $count++ }}</td>
                 <td class="text-center text-xxs uppercase font-bold px-5 py-3">{{ $item->article->unit->name }}</td>
                 <td class="text-center text-xxs uppercase font-bold px-5 py-3">{{ $item->article->name }}</td>
-                <td class="text-center text-xxs uppercase font-bold px-5 py-3">{{ $item->quantity }}</td>
+                <td class="text-center text-xxs uppercase font-bold px-5 py-3">{{ Util::parseMoney($item->quantity) }}</td>
             </tr>
             <?php
-                $total_quantity += $item->quantity;
+                $total_quantity += Util::parseMoney($item->quantity);
             ?>
         @endforeach
             <tr class="text-sm">

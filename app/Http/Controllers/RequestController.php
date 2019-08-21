@@ -20,6 +20,8 @@ use App\ArticleHistory;
 use App\UserHistory;
 use App\Employee;
 use Carbon\Carbon;
+use Util;
+
 class RequestController extends Controller
 {
     /**
@@ -274,7 +276,7 @@ class RequestController extends Controller
      */
     public function store(Request $request)
     {
-
+        logger($request->all());
         if($request->has('storage_destiny_id'))
         {
             $storage_destiny_id = $request->storage_destiny_id;
