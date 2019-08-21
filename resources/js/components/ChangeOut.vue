@@ -44,7 +44,7 @@
                                 deselect-label="Remover"
                                 selected-label="Seleccionado"
                                 label="name"
-                                track-by="name" 
+                                track-by="name"
                                 @input="change()"
                                 >
                             </multiselect>
@@ -70,7 +70,7 @@
                                      <thead>
                                        <!--  <th></th> -->
                                         <th scope="col">Nro</th>
-                                        <th scope="col">Articulos</th>  
+                                        <th scope="col">Articulos</th>
                                         <th scope="col">Unidad</th>
                                         <th scope="col">Cantidad</th>
                                         <th scope="col"  v-if="articulo">Nuevo Articulo </th>
@@ -200,7 +200,7 @@ export default {
         //      });
 
     },
-  
+
     computed:{
 
     },

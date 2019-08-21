@@ -85,9 +85,10 @@ class RequestChangeController extends Controller
         return view('request_change.create_income',compact('article_income','articles'));
     }
 
-    public function create_change_out($article_request_id)
+    public function create_change_out($article_request_id)//solicitud de salida
     {
         $article_request = ArticleRequest::with('article_request_items')->find($article_request_id);
+        // return $article_request;
         //$articles = Article::with('unit')->get();
         $articles = array();
         $stocks = Stock::with('article')->where('storage_id',Auth::user()->getStorage()->id)->select('article_id',DB::raw('sum(stocks.quantity) as quantity'))->groupBy('stocks.article_id')->get();
@@ -150,57 +151,85 @@ class RequestChangeController extends Controller
 
     public function store_out(Request $request)
     {
-        //return $request->all();
+        // return $request->all();
         $arti=null;
-
-        $request_change_out = new RequestChangeOut;
-        $request_change_out->type = $request->type;
-        $request_change_out->article_request_id = $request->article_request_id;
-        $request_change_out->description = $request->observation;
-        $request_change_out->user_id = Auth::user()->usr_id;
-        $request_change_out->storage_id = Auth::user()->getStorage()->id;
-        $request_change_out->save();
-        // return $request_change_out;
-        $request_change_out_items = json_decode($request->request_out_items);
-         //return $request_change_out_items;
-        foreach($request_change_out_items as $request_out_item)
+        if($request->type == 'Eliminacion')
         {
-             if(isset($request_out_item->arti))
+            $request_change_out = new RequestChangeOut;
+            $request_change_out->type = $request->type;
+            $request_change_out->article_request_id = $request->article_request_id;
+            $request_change_out->description = $request->observation;
+            $request_change_out->user_id = Auth::user()->usr_id;
+            $request_change_out->storage_id = Auth::user()->getStorage()->id;
+            $request_change_out->save();
+
+            $request_change_out_items = json_decode($request->request_out_items);
+            //return $request_change_out_items;
+            foreach($request_change_out_items as $request_out_item)
             {
-                if($request_out_item->new_quantity==0 && $request_out_item->new_cost==0)
-                {
+
                     $request_change_out_item = new RequestChangeOutItem;
                     $request_change_out_item->request_change_out_id = $request_change_out->id;
-                    $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                  //  $request_change_out_item->article_request_item_id = $request_out_item->id;
-
-                     // $request_change_out_item->cost = $request_income_item->new_cost;
-                    $request_change_out_item->quantity = $request_out_item->quantity;
+                    $request_change_out_item->article_id = $request_out_item->article_id;//revisar
+                    $request_change_out_item->article_request_item_id = $request_out_item->id;
+                    $request_change_out_item->quantity = $request_out_item->quantity_apro;
                     $request_change_out_item->save();
+
+            }
+
+        }else // por modificacion
+        {
+            $request_change_out = new RequestChangeOut;
+            $request_change_out->type = $request->type;
+            $request_change_out->article_request_id = $request->article_request_id;
+            $request_change_out->description = $request->observation;
+            $request_change_out->user_id = Auth::user()->usr_id;
+            $request_change_out->storage_id = Auth::user()->getStorage()->id;
+            $request_change_out->save();
+            // return $request_change_out;
+            $request_change_out_items = json_decode($request->request_out_items);
+             //return $request_change_out_items;
+            foreach($request_change_out_items as $request_out_item)
+            {
+                 if(isset($request_out_item->arti))
+                {
+                    if($request_out_item->new_quantity==0 && $request_out_item->new_cost==0)
+                    {
+                        $request_change_out_item = new RequestChangeOutItem;
+                        $request_change_out_item->request_change_out_id = $request_change_out->id;
+                        $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
+                      //  $request_change_out_item->article_request_item_id = $request_out_item->id;
+
+                         // $request_change_out_item->cost = $request_income_item->new_cost;
+                        $request_change_out_item->quantity = $request_out_item->quantity;
+                        $request_change_out_item->save();
+                    }
+                    else
+                    {
+                        $request_change_out_item = new RequestChangeOutItem;
+                        $request_change_out_item->request_change_out_id = $request_change_out->id;
+                        $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
+                     //   $request_change_out_item->article_request_item_id = $request_out_item->id;
+
+
+                        // $request_change_out_item->cost = $request_income_item->new_cost;
+                        $request_change_out_item->quantity = $request_out_item->new_quantity;
+                        $request_change_out_item->save();
+                    }
                 }
                 else
                 {
+
                     $request_change_out_item = new RequestChangeOutItem;
                     $request_change_out_item->request_change_out_id = $request_change_out->id;
-                    $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                 //   $request_change_out_item->article_request_item_id = $request_out_item->id;
-
-
-                    // $request_change_out_item->cost = $request_income_item->new_cost;
-                    $request_change_out_item->quantity = $request_out_item->new_quantity;
+                    $request_change_out_item->article_id = $request_out_item->article_id;//revisar
+                    $request_change_out_item->quantity = $request_out_item->new_quantity==0?$request_out_item->quantity: $request_out_item->new_quantity ;
                     $request_change_out_item->save();
                 }
             }
-            else
-            {
-
-                $request_change_out_item = new RequestChangeOutItem;
-                $request_change_out_item->request_change_out_id = $request_change_out->id;
-                $request_change_out_item->article_id = $request_out_item->article_id;//revisar
-                $request_change_out_item->quantity = $request_out_item->new_quantity==0?$request_out_item->quantity: $request_out_item->new_quantity ;
-                $request_change_out_item->save();
-            }
         }
+
+
 
         return redirect('request_change');
         // return back()->withInput();
@@ -361,7 +390,7 @@ class RequestChangeController extends Controller
     }
 
 
-    public function  confirmOut(Request $request)
+    public function  confirmOut(Request $request) //confirmacion de salida
     {
         // return $request->all();
         $request_change_out = RequestChangeOut::find($request->request_change_out_id);
@@ -375,6 +404,28 @@ class RequestChangeController extends Controller
                 # code...
                     $request_change_out->state = 'Aprobado';
                     # colocar logica de codigo
+                    if($request_change_out->type =='Eliminacion')
+                    {
+                        $request_change_out_items = RequestChangeOutItem::where('request_change_out_id',$request_change_out->id)->get();
+                        foreach($request_change_out_items as $request_change_out_item)
+                        {
+                            $article_histories = ArticleHistory::where('article_request_item_id',$request_change_out_item->article_request_item_id)->get();
+                            foreach($article_histories as $article_history)
+                            {
+                                $stock = Stock::where('article_income_item_id',$article_history->article_income_item_id)->first();
+                                $stock->quantity += $article_history->quantity_desc;
+                                $stock->save();
+
+                                $article_history->delete();
+                            }
+
+                        }
+
+                        //return $request_change_out_items;
+
+                    }
+
+
                    // return $request_change_out;
                     // foreach($request_change_out->request_change_out_items as $out_change_item)
                     // {

@@ -65,7 +65,7 @@
                     <div v-html='csrf'></div>
                     <div class="modal-header" style="background-color:#adb5bd">
                         <h5 class="modal-title" id="registerModalLabel" v-if="isRequestStorage">Aprobar Solicitud de Traspaso Nro {{request.correlative}}</h5>
-                        <h5 class="modal-title" id="registerModalLabel" v-else><<strong>Aprobar Solicitud  Nro {{request.correlative}}</strong></h5>
+                        <h5 class="modal-title" id="registerModalLabel" v-else><strong>Aprobar Solicitud  Nro {{request.correlative}}</strong></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -151,12 +151,12 @@
             <div class="modal-content">
                 <form enctype="multipart/form-data" id='formCategory' method="post" :action="url+'/disapproved_request'">
                     <div v-html='csrf'></div>
-                    <div class="modal-body">   
+                    <div class="modal-body">
                         <input type="text" name="article_request_id" :value="request.id " hidden>
                         <input type="text" name="articles" :value="JSON.stringify(rows)" hidden>
                         <input type="text" name="type" value="Traspaso" v-if="isRequestStorage" hidden>
                         <input type="text" name="total_cost" :value="getTotalCost" v-if="isRequestStorage" hidden>
-                    <center><p><h3 style="color:#922d31;"><strong>ESTA SEGURO DE RECHAZAR<br>LA SOLICITUD Nro {{request.correlative}}?</strong></h3></p></center>
+                    <center><p><h3 style="color:#922d31;"><strong>ESTA SEGURO DE RECHAZAR<br>LA SOLICITUD Nro {{request.correlative}}?</strong></h3></center>
                     </div>
                               <!--   <div class="col-md-12">
                                     <div class="form-group">
@@ -285,12 +285,12 @@ export default {
              console.log('ingreso de datos salida',this.rows);
 
              let parameters = this.rows;
-           
+
             let url='/reporte_vista_RequestCheck?funcionario='+encodeURIComponent(this.request.full_name)+'&gerencia='+encodeURIComponent(this.gerencia)+'&salidas='+encodeURIComponent(JSON.stringify(this.rows));
 
              console.log('del url',url);
             $('#modalPdf .modal-body iframe').attr('src', url);
-            $('#modalPdf').modal('show');     
+            $('#modalPdf').modal('show');
         }
 
     },

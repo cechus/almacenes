@@ -404,7 +404,7 @@ class RequestController extends Controller
 
     }
 
-    //confirmacion del funcionario hdp
+    //confirmacion del funcionario
     public function confirmRequest(Request $request)
     {
         $articles = json_decode($request->articles);
@@ -454,11 +454,11 @@ class RequestController extends Controller
                         $stock->save();
                         //registro de history manual XD
                         $article_history = new ArticleHistory;
-                        $article_history->article_request_item_id =$article_request_item->id;//para salida
-                        $article_history->article_income_item_id =$stock->article_income_item_id;//para costo de ingreso
-                        $article_history->article_id =$article_request_item->article_id;
+                        $article_history->article_request_item_id = $article_request_item->id;//para salida
+                        $article_history->article_income_item_id = $stock->article_income_item_id;//para costo de ingreso
+                        $article_history->article_id = $article_request_item->article_id;
                         $article_history->type ='Salida';
-                        $article_history->quantity_desc =$descuento;
+                        $article_history->quantity_desc = $descuento;
                         $article_history->storage_id = Auth::user()->getStorage()->id;
                         $article_history->save();
 
