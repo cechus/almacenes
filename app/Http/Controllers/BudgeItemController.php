@@ -50,6 +50,7 @@ class BudgeItemController extends Controller
         }
         $budge_item->name = $request->name;
         $budge_item->description = $request->description;
+        $budge_item->number = $request->number;
         $budge_item->save();
 
         session()->flash('message','Se registro la partida '.$budge_item->name);
