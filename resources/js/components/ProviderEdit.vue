@@ -37,17 +37,17 @@
 							<div class="row">
                                 <div class="form-group col-md-8">
                                     <label for="lbfirst_name">Nombres</label>
-                                    <input type="text" class="form-control" id="first_name" name="first_name" v-model="form.first_name" placeholder="Nombre" v-validate="'required'">
+                                    <input type="text" class="form-control" id="first_name" name="first_name" v-model="form.first_name" placeholder="Nombre" v-validate="'required|alpha_space_quote'">
                                     <div class="invalid-feedback">{{ errors.first("address") }}</div>
                                 </div>
                                 <div class="form-group col-md-5">
                                     <label for="lblast_name">Apellido Paterno</label>
-                                    <input type="text" class="form-control" id="last_name" name="last_name" v-model="form.last_name" placeholder="Apellido Paterno" v-validate="'required'">
+                                    <input type="text" class="form-control" id="last_name" name="last_name" v-model="form.last_name" placeholder="Apellido Paterno" v-validate="'required|alpha_space_quote'">
                                     <div class="invalid-feedback">{{ errors.first("last_name") }}</div>
                                 </div>
                                 <div class="form-group col-md-5">
                                     <label for="lbmother_last_name">Apellido Materno</label>
-                                    <input type="text" class="form-control" id="mother_last_name" name="mother_last_name" v-model="form.mother_last_name" placeholder="Apellido Materno" v-validate="'required'">
+                                    <input type="text" class="form-control" id="mother_last_name" name="mother_last_name" v-model="form.mother_last_name" placeholder="Apellido Materno" v-validate="'required|alpha_space_quote'">
                                     <div class="invalid-feedback">{{ errors.first("mother_last_name") }}</div>
                                 </div>
                                 <div class="form-group col-md-2">

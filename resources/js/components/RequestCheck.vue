@@ -8,7 +8,7 @@
                    Solicitante: {{request.full_name}}
                     <!-- {{rows}} -->
                      <small class="float-sm-right">
-                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" ><i class="fa fa-user-check"></i> Aprobar  </button>
+                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" :disabled="!verify()" ><i class="fa fa-user-check"></i> Aprobar  </button>
                            <button class="btn btn-danger" data-toggle="modal" data-target="#ModalDisApproved"><i class="fa fa-user-times"></i> Rechazar  </button>
                            <a :href="url" class="btn btn-default"><i class="fa fa-ban"></i> Cancelar </a>
                            <!-- <button class="btn btn-default" ><i class="fa fa-ban"></i> Cancelar  </button> -->
@@ -38,7 +38,7 @@
                                         <td>{{item.stock.stock}}</td>
                                         <td>{{item.quantity}}</td>
                                         <td>
-                                            <input type="text" class="form-control" v-model="item.quantity_apro">
+                                            <input type="text" class="form-control" v-decimal v-model="item.quantity_apro" @chnage="verify()">
                                             <!-- {{item.quantity_apro}} -->
                                         </td>
                                     </tr>
@@ -121,9 +121,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"  @click="vistaprevia()">Vista Previa</button>
+                        <button type="button" :disabled="!verify()" class="btn btn-secondary"  @click="vistaprevia()">Vista Previa</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success">Aceptar</button>
+                        <button type="submit" :disabled="!verify()" class="btn btn-success">Aceptar</button>
                     </div>
                 </form>
             </div>
@@ -241,6 +241,7 @@ export default {
 		// 	show_reset_button:  false,
         // },
         hasFile: false,
+        isValid: false,
 
     }),
     mounted() {
@@ -248,8 +249,14 @@ export default {
         this.provider = this.providers[0];
         // console.log(this.articles);
         // console.log(this.gerencia);
+        this.verify();
     },
     methods: {
+        verify(){
+            return !this.rows.some(r => {
+                return parseFloat(r.stock.stock) < parseFloat(r.quantity_apro);
+            });
+        },
         addIncome(item){
             this.incomes.push({article:item,quantity:item.quantity});
             item.quantity = '';
@@ -267,7 +274,7 @@ export default {
         },
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
-                if (result) {
+                if (result && this.verify()) {
                 let form = document.getElementById("formCategory");
 
                     form.submit();
@@ -282,6 +289,9 @@ export default {
         },
 
         vistaprevia(){
+            if (!this.verify()) {
+                return;
+            }
              console.log('ingreso de datos salida',this.rows);
 
              let parameters = this.rows;
