@@ -38,7 +38,9 @@
 										deselect-label="Remover"
 										selected-label="Seleccionado"
 										label="name"
-										track-by="name" >
+										track-by="name"
+                                        v-validate="'required'"
+                                        >
 
 									</multiselect>
 									<div class="invalid-feedback">{{ errors.first("unidad") }}</div>
@@ -55,7 +57,9 @@
 										deselect-label="Remover"
 										selected-label="Seleccionado"
 										label="name"
-										track-by="name" >
+										track-by="name"
+                                        v-validate="'required'"
+                                        >
 
 									</multiselect>
 									<div class="invalid-feedback">{{ errors.first("partida") }}</div>
@@ -72,7 +76,9 @@
 										deselect-label="Remover"
 										selected-label="Seleccionado"
 										label="name"
-										track-by="name" >
+										track-by="name"
+                                        v-validate="'required'"
+                                        >
 
 									</multiselect>
 									<div class="invalid-feedback">{{ errors.first("categoria") }}</div>

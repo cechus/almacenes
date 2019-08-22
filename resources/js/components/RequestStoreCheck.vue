@@ -10,7 +10,7 @@
                    Solicitante: {{request.person.first_name+' '+request.person.second_name+' '+request.person.last_name+' '+request.person.mother_last_name}}
                     <!-- {{rows}} -->
                      <small class="float-sm-right">
-                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" ><i class="fa fa-user-check"></i> Aprobar  </button>
+                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" :disabled="verify()" ><i class="fa fa-user-check"></i> Aprobar  </button>
                            <button class="btn btn-danger" ><i class="fa fa-user-times"></i> Rechazar  </button>
                            <a :href="url" class="btn btn-default"><i class="fa fa-ban"></i> Cancelar </a>
                            <!-- <button class="btn btn-default" ><i class="fa fa-ban"></i> Cancelar  </button> -->
@@ -35,12 +35,12 @@
                                         <td>{{item.article.name}}</td>
                                         <td>{{item.article.unit.name}}</td>
                                         <td v-if="isRequestStorage">
-                                            <input type="text" class="form-control" v-model="item.cost">
+                                            <input type="text" class="form-control" v-decimal v-model="item.cost">
                                         </td>
                                         <td>{{item.stock.stock}}</td>
                                         <td>{{item.quantity}}</td>
                                         <td>
-                                            <input type="text" class="form-control" v-model="item.quantity_apro">
+                                            <input type="text" class="form-control" v-decimal v-model="item.quantity_apro">
                                             <!-- {{item.quantity_apro}} -->
                                         </td>
                                     </tr>
@@ -162,9 +162,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" >Vista Previa</button>
+                        <button type="button" :disabled="verify()" class="btn btn-secondary" >Vista Previa</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-success">Aceptar</button>
+                        <button type="submit" :disabled="verify()" class="btn btn-success">Aceptar</button>
                     </div>
                 </form>
             </div>
@@ -244,8 +244,14 @@ export default {
         console.log(this.request);
         // console.log(this.articles);
         // console.log(this.gerencia);
+        this.verify();
     },
     methods: {
+        verify(){
+            return this.rows.some(r => {
+                return parseFloat(r.stock.stock) < parseFloat(r.quantity_apro)
+            })
+        },
         addIncome(item){
             this.incomes.push({article:item,quantity:item.quantity});
             item.quantity = '';
@@ -263,7 +269,7 @@ export default {
         },
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
-                if (result) {
+                if (result && ! this.verify()) {
                 let form = document.getElementById("formCategory");
 
                     form.submit();

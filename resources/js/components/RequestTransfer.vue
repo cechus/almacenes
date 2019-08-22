@@ -32,11 +32,11 @@
                         </template>
 
                         <template slot="quantity" slot-scope="props">
-                            <input class='form-control' v-model="props.row.quantity" >
+                            <input class='form-control' v-model="props.row.quantity" v-decimal :disabled="! hasStock(props.row)" >
                         </template>
 
                         <template slot="option" slot-scope="props">
-                        <button class="btn btn-info" @click="addIncome(props.row)"><i class='fa fa-cart-plus'></i></button>
+                        <button class="btn btn-info" @click="addIncome(props.row)" :disabled="!(canAdd(props.row) && hasStock(props.row) && !inIncomes(props.row) )" ><i class='fa fa-cart-plus'></i></button>
 
                         </template>
                     </vue-bootstrap4-table>
@@ -51,7 +51,7 @@
 
                      Articulos Seleccinados
                       <small class="float-sm-right">
-                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" ><i class="fa fa-shopping-cart"></i> Solicitar  </button>
+                           <button class="btn btn-success" data-toggle="modal" data-target="#registerModal" :disabled="! incomes.length" ><i class="fa fa-shopping-cart"></i> Solicitar  </button>
                            <button class="btn btn-default" ><i class="fa fa-ban"></i> Cancelar  </button>
                         </small>
                 </div>
@@ -138,9 +138,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info" @click="vistaprevia()">Vista Previa</button>
+                        <button type="button" :disabled="! incomes.length" class="btn btn-info" @click="vistaprevia()">Vista Previa</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="submit" :disabled="! incomes.length" class="btn btn-primary">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -245,15 +245,28 @@ export default {
         console.log('user1111',this.usr);
     },
     methods: {
+        hasStock(item) {
+            return parseFloat(item.quantity_stock) > 0
+        },
+        canAdd(item) {
+            return parseFloat(item.quantity) <= parseFloat(item.quantity_stock);
+        },
+        inIncomes(item){
+            return this.incomes.map(x => x.article).map(x => x.article_id).includes(item.article_id);
+        },
         addIncome(item){
-            if(item.quantity>0) 
+            if (this.inIncomes(item)) {
+                toastr.error('item ya agregado')
+                return;
+            }
+            if(item.quantity>0 && this.hasStock(item) && this.canAdd(item))
              {
                 // alert('es mayor a cero');
                 this.incomes.push({article:item,quantity:item.quantity,cost:item.cost});
                 item.quantity = '';
                 // item.cost ='';
              }else{
-                alert('La cantidad, no debe ser vacio y debe ser mayor a 0!!!');
+                toastr.error('La cantidad, no debe ser vacio y debe ser mayor a 0!!!');
              }
             // if()
             // this.incomes.push({article:item,quantity:item.quantity});
@@ -276,7 +289,7 @@ export default {
         },
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
-                if (result) {
+                if (result && this.incomes.length > 0) {
                 let form = document.getElementById("formCategory");
 
                     form.submit();
@@ -293,6 +306,9 @@ export default {
                  });
         },
          vistaprevia(){
+             if (!this.incomes.length) {
+                 return;
+             }
              console.log('ingreso de datos traspaso',this.incomes);
              console.log('userr',this.usr);
 

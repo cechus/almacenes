@@ -62,6 +62,15 @@ instance.extend('max_current_date', {
     return moment().diff(moment(value, "DD/MM/YYYY"), "days", true) > 0;
   }
 });
+instance = new Validator();
+instance.extend('alpha_space_quote', {
+  getMessage: (field) => `El dato ingresado no debe contener números o minúsculas.`,
+  validate: (value) => {
+    let regex = /^[A-ZÁÉÍÑÓÚÜ\s\'\.]*$/;
+    return regex.exec(value) !== null;
+  }
+});
+
 
 // modal
 Vue.use(VModal)
