@@ -149,10 +149,9 @@ class RequestChangeController extends Controller
 
     }
 
-    public function store_out(Request $request)
+    public function store_out(Request $request) //creacion de solicitudes de cambio XD
     {
-        // return $request->all();
-        $arti=null;
+
         if($request->type == 'Eliminacion')
         {
             $request_change_out = new RequestChangeOut;
@@ -186,47 +185,46 @@ class RequestChangeController extends Controller
             $request_change_out->user_id = Auth::user()->usr_id;
             $request_change_out->storage_id = Auth::user()->getStorage()->id;
             $request_change_out->save();
-            // return $request_change_out;
+
+            //tipo de modificacion en items de articulos
             $request_change_out_items = json_decode($request->request_out_items);
-             //return $request_change_out_items;
-            foreach($request_change_out_items as $request_out_item)
-            {
-                 if(isset($request_out_item->arti))
-                {
-                    if($request_out_item->new_quantity==0 && $request_out_item->new_cost==0)
+            // return $request_change_out_items;
+
+            switch ($request->change) {
+                case 'Articulo':
+                    # code...
+                    foreach($request_change_out_items as $request_change_out_item)
                     {
-                        $request_change_out_item = new RequestChangeOutItem;
-                        $request_change_out_item->request_change_out_id = $request_change_out->id;
-                        $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                      //  $request_change_out_item->article_request_item_id = $request_out_item->id;
+                        // return json_encode($request_change_out_item->new_article);
+                        // return $request_change_out_item->new_article->id;
+                        $new_request_change_out_item = new RequestChangeOutItem;
+                        $new_request_change_out_item->request_change_out_id = $request_change_out->id;
+                        $new_request_change_out_item->article_request_item_id = $request_change_out_item->id;
+                        $new_request_change_out_item->quantity = $request_change_out_item->quantity_apro;
+                        if(isset($request_change_out_item->new_article))
+                        {
+                            $new_request_change_out_item->article_id = $request_change_out_item->new_article->id;//solicitando el cambiazo XD
+                        }else{
+                            $new_request_change_out_item->article_id = $request_change_out_item->article_id;
+                        }
+                        $new_request_change_out_item->save();
 
-                         // $request_change_out_item->cost = $request_income_item->new_cost;
-                        $request_change_out_item->quantity = $request_out_item->quantity;
-                        $request_change_out_item->save();
                     }
-                    else
-                    {
-                        $request_change_out_item = new RequestChangeOutItem;
-                        $request_change_out_item->request_change_out_id = $request_change_out->id;
-                        $request_change_out_item->article_id = $request_out_item->arti->id;//revisar
-                     //   $request_change_out_item->article_request_item_id = $request_out_item->id;
 
 
-                        // $request_change_out_item->cost = $request_income_item->new_cost;
-                        $request_change_out_item->quantity = $request_out_item->new_quantity;
-                        $request_change_out_item->save();
-                    }
-                }
-                else
-                {
+                    break;
+                case 'Cantidad':
+                    # code...
+                    break;
 
-                    $request_change_out_item = new RequestChangeOutItem;
-                    $request_change_out_item->request_change_out_id = $request_change_out->id;
-                    $request_change_out_item->article_id = $request_out_item->article_id;//revisar
-                    $request_change_out_item->quantity = $request_out_item->new_quantity==0?$request_out_item->quantity: $request_out_item->new_quantity ;
-                    $request_change_out_item->save();
-                }
             }
+
+            // return $request->all();
+
+            // return $request_change_out;
+
+             //return $request_change_out_items;
+
         }
 
 

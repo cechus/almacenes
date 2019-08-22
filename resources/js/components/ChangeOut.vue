@@ -33,12 +33,11 @@
                             <div class="invalid-feedback">{{ errors.first("type") }}</div>
                         </div>
                         <div class="form-group  col-md-3" v-if="sw">
-                            <input type="text" name="change" v-if="form.changes" :value="form.changes.id" hidden>
+                            <input type="text" name="change" v-if="form.changes" :value="form.changes.name" hidden>
                             <br>
                             <multiselect
                                 v-model="form.changes"
                                 :options="changes"
-                                id="change"
                                 placeholder="Seleccionar una opcion"
                                 select-label="Seleccionar"
                                 deselect-label="Remover"
@@ -85,11 +84,10 @@
                                             <td>{{item.article.unit.name}}</td>
                                             <td>{{item.quantity}}</td>
                                             <td v-if="articulo">
-                                                <input type="text" name="provider_id" v-if="item.arti" :value="item.arti.id">
                                                 <multiselect
-                                                    v-model="item.arti"
+                                                    v-model="item.new_article"
                                                     :options="articles"
-                                                    id="tipo"
+
                                                     placeholder="Seleccionar Articulo"
                                                     select-label="Seleccionar"
                                                     deselect-label="Remover"
