@@ -189,7 +189,7 @@ class RequestChangeController extends Controller
             //tipo de modificacion en items de articulos
             $request_change_out_items = json_decode($request->request_out_items);
             // return $request_change_out_items;
-
+            logger($request->change);
             switch ($request->change) {
                 case 'Articulo':
                     # code...
@@ -214,9 +214,16 @@ class RequestChangeController extends Controller
 
                     break;
                 case 'Cantidad':
-                    # code...
+                    // logger($request_change_out_items);
+                    //!! TODO TRABAJANDO AQUI
+                    foreach($request_change_out_items as $request_change_out_item)
+                    {
+                        logger($request_change_out_item->id);
+                        $new_request_change_out_item = RequestChangeOutItem::where('article_request_item_id', $request_change_out_item->id)->first();
+                        $new_request_change_out_item->quantity = $request_change_out_item->new_quantity;
+                        $new_request_change_out_item->save();
+                    }
                     break;
-
             }
 
             // return $request->all();

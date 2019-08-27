@@ -86,7 +86,7 @@
                                             <td v-if="articulo">
                                                 <multiselect
                                                     v-model="item.new_article"
-                                                    :options="articles"
+                                                    :options="articlesFilter(item)"
 
                                                     placeholder="Seleccionar Articulo"
                                                     select-label="Seleccionar"
@@ -98,7 +98,7 @@
                                                 </multiselect>
                                             </td>
                                             <td v-if="cantidad">
-                                                <input type="text" class="form-control" value="0" v-model="item.new_quantity" :disabled="isDeleted()">
+                                                <input type="text" class="form-control" value="0" v-model="item.new_quantity" v-decimal  :disabled="isDeleted()">
                                             </td>
                                             <!-- <td v-if="itemart">
                                                 <input type="text" class="form-control" value="0" v-model="row.new_quantity" :disabled="isDeleted()">
@@ -135,7 +135,7 @@
                                 <label for="Articulo">Articulo</label>
                                 <multiselect
                                     v-model="item.article"
-                                    :options="articles"
+                                    :options="articlesNotInItems"
                                     id="Articulo"
                                     placeholder="Seleccionar Articulo"
                                     select-label="Seleccionar"
@@ -148,7 +148,7 @@
                             </div>
                             <div class="form-group  col-md-12" >
                                 <label for="quantity">Cantidad</label>
-                                    <input type="text" class="form-control" v-model="item.new_quantity">
+                                    <input type="text" class="form-control" v-decimal v-model="item.new_quantity">
                                 <div class="invalid-feedback">{{ errors.first("quantity") }}</div>
                             </div>
                         </div>
@@ -200,12 +200,31 @@ export default {
     },
 
     computed:{
-
+        articlesNotInItems() {
+            let items = this.items.map(i => i.article_id);
+            return this.articles.filter(a =>{
+                return ! items.includes(a.id)
+            })
+        }
     },
     methods:{
+        articlesFilter(item) {
+            let items = this.items.map(i => i.article_id);
+            return this.articles.filter(a => {
+                return a.id != item.article_id && ! items.includes(a.id)
+            })
+        },
+        isValid() {
+            if (this.cantidad){
+                return ! this.items.some(i => {
+                    let stock = this.stocks.find(s => i.article_id == s.article_id )
+                    return parseFloat(stock.quantity) < parseFloat(i.new_quantity)
+                })
+            }
+        },
         validateBeforeSubmit() {
             this.$validator.validateAll().then((result) => {
-                if (result) {
+                if (result && this.isValid() ) {
                 let form = document.getElementById("formChange");
                     console.log(form);
                     form.submit();
@@ -222,10 +241,13 @@ export default {
             this.item.created_at = this.requestout.created_at;
             this.item.deleted_at = this.requestout.deleted_at;
             this.item.updated_at = this.requestout.updated_at;
-            this.item.quantity= 0;
+            this.item.quantity= this.item.new_quantity;
             this.item.id = 0;
             console.log(this.item);
-            this.items.push(this.item);
+            let stock = this.stocks.find(s => s.article_id == this.item.article_id);
+            if (parseFloat(stock.quantity) >= parseFloat(this.item.quantity) && !this.items.map(i => i.article_id).includes(this.item.article_id) ) {
+                this.items.push(this.item);
+            }
             console.log('aqui deberia adicionar el item');
         },
             mostrar() {
@@ -267,6 +289,10 @@ export default {
 
             change() {
                // var tipo = document.getElementById('types').value;
+               if (!this.form.changes) {
+                   return ;
+               }
+               this.items = this.items.filter(i => i.id != 0);
                console.log('modddd',this.form.changes.id);
                let combo = this.form.changes.id;
                // console.log('ESTE ES ITEM',this.articles);
